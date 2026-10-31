@@ -8,14 +8,36 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 1. Papkalarni sozlash
-const uploadsDir = path.join(__dirname, 'uploads');
+const isVercel = !!process.env.VERCEL;
+const baseDataDir = path.join(__dirname, 'data');
+const baseUploadsDir = path.join(__dirname, 'uploads');
+
+const dataDir = isVercel ? path.join('/tmp', 'data') : baseDataDir;
+const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : baseUploadsDir;
+
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
-
-const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// Vercel serverless muhitida boshlang'ich ma'lumotlarni /tmp ga nusxalash
+if (isVercel) {
+  try {
+    const initScreens = path.join(baseDataDir, 'screens.json');
+    const targetScreens = path.join(dataDir, 'screens.json');
+    if (fs.existsSync(initScreens) && !fs.existsSync(targetScreens)) {
+      fs.copyFileSync(initScreens, targetScreens);
+    }
+    const initAuth = path.join(baseDataDir, 'auth.json');
+    const targetAuth = path.join(dataDir, 'auth.json');
+    if (fs.existsSync(initAuth) && !fs.existsSync(targetAuth)) {
+      fs.copyFileSync(initAuth, targetAuth);
+    }
+  } catch (err) {
+    console.error('Vercel init data error:', err);
+  }
 }
 
 // 2. Parol va Autentifikatsiya (auth.json)
@@ -330,11 +352,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'ledzona.html'));
 });
 
-// Serverni ishga tushirish
-app.listen(PORT, () => {
-  console.log(`=========================================`);
-  console.log(` Server muvaffaqiyatli ishga tushdi:`);
-  console.log(` http://localhost:${PORT}`);
-  console.log(` Admin panel: http://localhost:${PORT}/admin`);
-  console.log(`=========================================`);
-});
+// Serverni ishga tushirish (lokal muhitda)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`=========================================`);
+    console.log(` Server muvaffaqiyatli ishga tushdi:`);
+    console.log(` http://localhost:${PORT}`);
+    console.log(` Admin panel: http://localhost:${PORT}/admin`);
+    console.log(`=========================================`);
+  });
+}
+
+// Vercel Serverless Function uchun eksport
+module.exports = app;
