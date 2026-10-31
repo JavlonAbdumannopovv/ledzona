@@ -42,6 +42,7 @@ if (isVercel) {
 
 // 2. Parol va Autentifikatsiya (auth.json)
 const DB_AUTH_FILE = path.join(dataDir, 'auth.json');
+const JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'ledzona-jwt-secret-token-key-2026';
 
 function hashPassword(pwd) {
   return crypto.createHash('sha256').update(pwd).digest('hex');
@@ -75,11 +76,51 @@ function setStoredPasswordHash(newHash) {
   fs.writeFileSync(DB_AUTH_FILE, JSON.stringify(data, null, 2), 'utf-8');
 }
 
-// Faol admin tokenlari (In-memory session)
-const activeTokens = new Set();
+// Stateless HMAC Signed Token (Vercel Serverless va istalgan domenlarda 100% xatosiz ishlaydi)
+function createAdminToken() {
+  const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
+  const payload = Buffer.from(JSON.stringify({
+    role: 'admin',
+    pwdHash: getStoredPasswordHash().substring(0, 16),
+    exp: Date.now() + 30 * 24 * 60 * 60 * 1000 // 30 kun amal qiladi
+  })).toString('base64url');
 
-function generateToken() {
-  return crypto.randomBytes(32).toString('hex');
+  const signature = crypto
+    .createHmac('sha256', JWT_SECRET)
+    .update(`${header}.${payload}`)
+    .digest('base64url');
+
+  return `${header}.${payload}.${signature}`;
+}
+
+function verifyAdminToken(token) {
+  try {
+    if (!token || typeof token !== 'string') return false;
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+    const [header, payload, signature] = parts;
+
+    const expectedSignature = crypto
+      .createHmac('sha256', JWT_SECRET)
+      .update(`${header}.${payload}`)
+      .digest('base64url');
+
+    if (signature !== expectedSignature) return false;
+
+    const decoded = JSON.parse(Buffer.from(payload, 'base64url').toString('utf-8'));
+    if (decoded.exp && decoded.exp < Date.now()) {
+      return false; // Token muddati tugagan
+    }
+
+    const currentHashPrefix = getStoredPasswordHash().substring(0, 16);
+    if (decoded.pwdHash && decoded.pwdHash !== currentHashPrefix) {
+      return false; // Parol o'zgarganda eski tokenlar bekor bo'ladi
+    }
+
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 function requireAdminAuth(req, res, next) {
@@ -91,7 +132,7 @@ function requireAdminAuth(req, res, next) {
     token = req.query.token;
   }
 
-  if (token && activeTokens.has(token)) {
+  if (verifyAdminToken(token)) {
     return next();
   }
   return res.status(401).json({ success: false, message: 'Ruxsat berilmagan! Iltimos, qayta kiring.' });
@@ -117,16 +158,30 @@ if (!fs.existsSync(DB_FILE)) {
 
 function readScreens() {
   try {
+    if (!fs.existsSync(DB_FILE)) {
+      const fallbackPath = path.join(baseDataDir, 'screens.json');
+      if (fs.existsSync(fallbackPath)) {
+        fs.copyFileSync(fallbackPath, DB_FILE);
+      }
+    }
     const content = fs.readFileSync(DB_FILE, 'utf-8');
     return JSON.parse(content);
   } catch (err) {
     console.error('Bazani o\'qishda xatolik:', err);
-    return [];
+    try {
+      return JSON.parse(fs.readFileSync(path.join(baseDataDir, 'screens.json'), 'utf-8'));
+    } catch (e) {
+      return [];
+    }
   }
 }
 
 function writeScreens(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (err) {
+    console.error('Bazaga yozishda xatolik:', err);
+  }
 }
 
 // 4. Multer fayl yuklash konfiguratsiyasi
@@ -144,6 +199,17 @@ const upload = multer({
 });
 
 // 5. Middlewares
+// Universal CORS (qaysi domen yoki portdan murojaat qilinishidan qat'iy nazar to'liq ruxsat)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -219,8 +285,7 @@ app.post('/api/admin/login', (req, res) => {
   const inputHash = hashPassword(password.trim());
 
   if (inputHash === currentHash) {
-    const token = generateToken();
-    activeTokens.add(token);
+    const token = createAdminToken();
     return res.json({
       success: true,
       token: token,
@@ -238,11 +303,6 @@ app.get('/api/admin/check-session', requireAdminAuth, (req, res) => {
 
 // Admin chiqish (Logout)
 app.post('/api/admin/logout', requireAdminAuth, (req, res) => {
-  const authHeader = req.headers['authorization'];
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.split(' ')[1];
-    activeTokens.delete(token);
-  }
   res.json({ success: true, message: 'Chiqildi' });
 });
 
