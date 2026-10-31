@@ -1104,7 +1104,8 @@
       // Ma'lumotlarni yuklash
       async function loadDashboardData() {
         try {
-          const res = await fetch('/api/admin/screens', {
+          const res = await fetch('/api/admin/screens?_t=' + Date.now(), {
+            cache: 'no-store',
             headers: { 'Authorization': 'Bearer ' + authToken }
           });
           if (res.status === 401) {
@@ -1115,6 +1116,10 @@
           allScreens = data.screens || [];
           updateStats(data.stats);
           renderCards();
+          if (data.persistent === false && !window.__storageWarned) {
+            window.__storageWarned = true;
+            showToast('Doimiy ombor (Vercel Blob) ulanmagan — yangi arizalar saqlanmasligi mumkin!', true);
+          }
         } catch (err) {
           showToast('Ma\'lumotlarni yuklashda xatolik!', true);
         }

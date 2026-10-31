@@ -983,7 +983,7 @@
           <div class="ledzona-dropzone__text">
             <span>Rasm tanlash uchun bosing</span> yoki faylni bu yerga tashlang
           </div>
-          <div class="ledzona-dropzone__sub">PNG, JPG, WEBP formatlar (maks. 15 MB)</div>
+          <div class="ledzona-dropzone__sub">PNG, JPG, WEBP formatlar (maks. 10 MB)</div>
         </div>
 
         <div class="ledzona-dropzone__preview" id="dropzone-preview-state">
@@ -1061,6 +1061,38 @@
     });
   }
 
+  // Rasmni yuborishdan oldin siqish (maks. 1920px, JPEG) — serverga tez va limitdan oshmay yetib boradi
+  function compressImage(file, maxSide = 1920, quality = 0.85) {
+    return new Promise((resolve) => {
+      if (!file || !file.type || !file.type.startsWith('image/') || file.type === 'image/gif') {
+        return resolve(file);
+      }
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let { width, height } = img;
+        const scale = Math.min(1, maxSide / Math.max(width, height));
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          if (!blob || (blob.size >= file.size && scale === 1)) return resolve(file);
+          const baseName = (file.name || 'image').replace(/\.[^.]+$/, '');
+          resolve(new File([blob], baseName + '.jpg', { type: 'image/jpeg' }));
+        }, 'image/jpeg', quality);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+      img.src = url;
+    });
+  }
+
   // 4. Formani to'liq sozlash
   function setupForm() {
     const form = document.getElementById('form5136870403') || document.querySelector('form');
@@ -1135,7 +1167,8 @@
         formData.append('description', descVal);
 
         if (fileInput && fileInput.files && fileInput.files[0]) {
-          formData.append('image', fileInput.files[0]);
+          const prepared = await compressImage(fileInput.files[0]);
+          formData.append('image', prepared, prepared.name || 'image.jpg');
         }
 
         const originalText = submitBtnSpan.textContent;

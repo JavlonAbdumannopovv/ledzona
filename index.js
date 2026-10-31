@@ -1,87 +1,44 @@
 const express = require('express');
 const path = require('path');
 const multer = require('multer');
-const fs = require('fs');
 const crypto = require('crypto');
+const storage = require('./storage');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1. Papkalarni sozlash
-const isVercel = !!process.env.VERCEL;
-const baseDataDir = path.join(__dirname, 'data');
-const baseUploadsDir = path.join(__dirname, 'uploads');
-
-const dataDir = isVercel ? path.join('/tmp', 'data') : baseDataDir;
-const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : baseUploadsDir;
-
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
-
-// Vercel serverless muhitida boshlang'ich ma'lumotlarni /tmp ga nusxalash
-if (isVercel) {
-  try {
-    const initScreens = path.join(baseDataDir, 'screens.json');
-    const targetScreens = path.join(dataDir, 'screens.json');
-    if (fs.existsSync(initScreens) && !fs.existsSync(targetScreens)) {
-      fs.copyFileSync(initScreens, targetScreens);
-    }
-    const initAuth = path.join(baseDataDir, 'auth.json');
-    const targetAuth = path.join(dataDir, 'auth.json');
-    if (fs.existsSync(initAuth) && !fs.existsSync(targetAuth)) {
-      fs.copyFileSync(initAuth, targetAuth);
-    }
-  } catch (err) {
-    console.error('Vercel init data error:', err);
-  }
-}
-
-// 2. Parol va Autentifikatsiya (auth.json)
-const DB_AUTH_FILE = path.join(dataDir, 'auth.json');
+// ============================================================================
+// 1. Parol va Autentifikatsiya (auth.json — doimiy omborda)
+// ============================================================================
 const JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'ledzona-jwt-secret-token-key-2026';
 
 function hashPassword(pwd) {
   return crypto.createHash('sha256').update(pwd).digest('hex');
 }
 
-function initAuth() {
-  if (!fs.existsSync(DB_AUTH_FILE)) {
-    const defaultAuth = {
-      passwordHash: hashPassword('admin123'),
-      updatedAt: new Date().toISOString()
-    };
-    fs.writeFileSync(DB_AUTH_FILE, JSON.stringify(defaultAuth, null, 2), 'utf-8');
-  }
-}
-initAuth();
-
-function getStoredPasswordHash() {
+async function getStoredPasswordHash() {
   try {
-    const data = JSON.parse(fs.readFileSync(DB_AUTH_FILE, 'utf-8'));
-    return data.passwordHash;
+    const data = await storage.readJSON('auth', null);
+    if (data && data.passwordHash) return data.passwordHash;
   } catch (err) {
-    return hashPassword('admin123');
+    console.error('Parolni o\'qishda xatolik:', err);
   }
+  return hashPassword('admin123');
 }
 
-function setStoredPasswordHash(newHash) {
-  const data = {
+async function setStoredPasswordHash(newHash) {
+  await storage.writeJSON('auth', {
     passwordHash: newHash,
     updatedAt: new Date().toISOString()
-  };
-  fs.writeFileSync(DB_AUTH_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  });
 }
 
 // Stateless HMAC Signed Token (Vercel Serverless va istalgan domenlarda 100% xatosiz ishlaydi)
-function createAdminToken() {
+async function createAdminToken() {
   const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
   const payload = Buffer.from(JSON.stringify({
     role: 'admin',
-    pwdHash: getStoredPasswordHash().substring(0, 16),
+    pwdHash: (await getStoredPasswordHash()).substring(0, 16),
     exp: Date.now() + 30 * 24 * 60 * 60 * 1000 // 30 kun amal qiladi
   })).toString('base64url');
 
@@ -93,7 +50,7 @@ function createAdminToken() {
   return `${header}.${payload}.${signature}`;
 }
 
-function verifyAdminToken(token) {
+async function verifyAdminToken(token) {
   try {
     if (!token || typeof token !== 'string') return false;
     const parts = token.split('.');
@@ -112,7 +69,7 @@ function verifyAdminToken(token) {
       return false; // Token muddati tugagan
     }
 
-    const currentHashPrefix = getStoredPasswordHash().substring(0, 16);
+    const currentHashPrefix = (await getStoredPasswordHash()).substring(0, 16);
     if (decoded.pwdHash && decoded.pwdHash !== currentHashPrefix) {
       return false; // Parol o'zgarganda eski tokenlar bekor bo'ladi
     }
@@ -123,7 +80,7 @@ function verifyAdminToken(token) {
   }
 }
 
-function requireAdminAuth(req, res, next) {
+async function requireAdminAuth(req, res, next) {
   const authHeader = req.headers['authorization'];
   let token = null;
   if (authHeader && authHeader.startsWith('Bearer ')) {
@@ -132,73 +89,61 @@ function requireAdminAuth(req, res, next) {
     token = req.query.token;
   }
 
-  if (verifyAdminToken(token)) {
+  if (await verifyAdminToken(token)) {
     return next();
   }
   return res.status(401).json({ success: false, message: 'Ruxsat berilmagan! Iltimos, qayta kiring.' });
 }
 
-// 3. Yengil ma'lumotlar bazasi (screens.json)
-const DB_FILE = path.join(dataDir, 'screens.json');
-if (!fs.existsSync(DB_FILE)) {
-  const initialData = [
-    {
-      id: "screen-1",
-      name: "Kichik Halqa Yo‘li megamonitori",
-      region: "Toshkent shahri",
-      address: "Chilonzor tumani, Bunyodkor ko‘prigi oldi",
-      description: "Uzun masofadan aniq ko‘rinadigan yuqori kontrastli tashqi panel",
-      imageUrl: "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
-      createdAt: new Date().toISOString(),
-      status: "approved"
-    }
-  ];
-  fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), 'utf-8');
+// ============================================================================
+// 2. Ma'lumotlar bazasi (screens.json — doimiy omborda)
+// ============================================================================
+const DEFAULT_SCREENS = [
+  {
+    id: "screen-1",
+    name: "Kichik Halqa Yo‘li megamonitori",
+    region: "Toshkent shahri",
+    address: "Chilonzor tumani, Bunyodkor ko‘prigi oldi",
+    description: "Uzun masofadan aniq ko‘rinadigan yuqori kontrastli tashqi panel",
+    imageUrl: "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
+    createdAt: new Date().toISOString(),
+    status: "approved"
+  }
+];
+
+async function readScreens() {
+  const data = await storage.readJSON('screens', DEFAULT_SCREENS);
+  return Array.isArray(data) ? data : [];
 }
 
-function readScreens() {
-  try {
-    if (!fs.existsSync(DB_FILE)) {
-      const fallbackPath = path.join(baseDataDir, 'screens.json');
-      if (fs.existsSync(fallbackPath)) {
-        fs.copyFileSync(fallbackPath, DB_FILE);
-      }
-    }
-    const content = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(content);
-  } catch (err) {
-    console.error('Bazani o\'qishda xatolik:', err);
-    try {
-      return JSON.parse(fs.readFileSync(path.join(baseDataDir, 'screens.json'), 'utf-8'));
-    } catch (e) {
-      return [];
-    }
-  }
+async function writeScreens(data) {
+  await storage.writeJSON('screens', data);
 }
 
-function writeScreens(data) {
-  try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('Bazaga yozishda xatolik:', err);
-  }
+// Bir vaqtning o'zida kelgan yozuvlar bir-birini bosib ketmasligi uchun navbat
+let writeQueue = Promise.resolve();
+function updateScreens(mutator) {
+  const job = writeQueue.then(async () => {
+    const screens = await readScreens();
+    const result = await mutator(screens);
+    await writeScreens(screens);
+    return result;
+  });
+  writeQueue = job.catch(() => {});
+  return job;
 }
 
-// 4. Multer fayl yuklash konfiguratsiyasi
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadsDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const safeName = Date.now() + '-' + Math.round(Math.random() * 1e9) + ext;
-    cb(null, safeName);
-  }
-});
+// ============================================================================
+// 3. Multer (rasm xotirada qabul qilinadi, keyin doimiy omborga yoziladi)
+// ============================================================================
 const upload = multer({
-  storage,
-  limits: { fileSize: 15 * 1024 * 1024 } // 15MB gacha
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 4 * 1024 * 1024 } // Vercel so'rov limiti (~4.5MB) sababli 4MB gacha
 });
 
-// 5. Middlewares
+// ============================================================================
+// 4. Middlewares
+// ============================================================================
 // Universal CORS (qaysi domen yoki portdan murojaat qilinishidan qat'iy nazar to'liq ruxsat)
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -213,29 +158,54 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Statik fayllar
-app.use('/uploads', express.static(uploadsDir));
-app.use('/ledzona_files', express.static(path.join(__dirname, 'ledzona_files')));
-app.use(express.static(__dirname));
-
-// ============================================================================
-// 6. FOYDALANUVCHILAR UCHUN PUBLIC API
-// ============================================================================
-
-// Faqat tasdiqlangan (approved) ekranlarni saytga chiqarish
-app.get('/api/screens', (req, res) => {
+function noCache(res) {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   res.setHeader('Surrogate-Control', 'no-store');
+}
 
-  const screens = readScreens();
-  const approvedScreens = screens.filter(s => s.status === 'approved');
-  res.json(approvedScreens);
+// Statik fayllar
+app.use('/uploads', express.static(storage.uploadsDir));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/ledzona_files', express.static(path.join(__dirname, 'ledzona_files')));
+// Ichki fayllarni (baza, parol, server kodi) tashqaridan o'qib bo'lmasligi uchun
+app.use((req, res, next) => {
+  if (/^\/(data|node_modules|\.git)(\/|$)/i.test(req.path) || /^\/(storage|index)\.js$/i.test(req.path) || /^\/(package(-lock)?|vercel)\.json$/i.test(req.path)) {
+    return res.status(404).end();
+  }
+  next();
+});
+app.use(express.static(__dirname));
+
+// ============================================================================
+// 5. FOYDALANUVCHILAR UCHUN PUBLIC API
+// ============================================================================
+
+// Faqat tasdiqlangan (approved) ekranlarni saytga chiqarish
+app.get('/api/screens', async (req, res) => {
+  noCache(res);
+  try {
+    const screens = await readScreens();
+    res.json(screens.filter(s => s.status === 'approved'));
+  } catch (err) {
+    console.error('Ekranlarni o\'qishda xatolik:', err);
+    res.status(500).json({ success: false, message: 'Server xatoligi yuz berdi' });
+  }
 });
 
 // Yangi ekran taklifi (status boshlang'ich: 'pending')
-app.post('/api/screens', upload.single('image'), (req, res) => {
+app.post('/api/screens', (req, res, next) => {
+  upload.single('image')(req, res, (err) => {
+    if (err) {
+      const msg = err.code === 'LIMIT_FILE_SIZE'
+        ? 'Rasm hajmi 4MB dan oshmasligi kerak!'
+        : 'Rasmni yuklashda xatolik yuz berdi';
+      return res.status(400).json({ success: false, message: msg });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
     const { name, region, address, description } = req.body;
 
@@ -245,12 +215,11 @@ app.post('/api/screens', upload.single('image'), (req, res) => {
 
     let imageUrl = '/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp';
     if (req.file) {
-      imageUrl = '/uploads/' + req.file.filename;
+      imageUrl = await storage.saveImage(req.file);
     }
 
-    const screens = readScreens();
     const newScreen = {
-      id: 'screen-' + Date.now(),
+      id: 'screen-' + Date.now() + '-' + Math.round(Math.random() * 1e4),
       name: name.trim(),
       region: (region || '').trim(),
       address: (address || '').trim(),
@@ -260,8 +229,7 @@ app.post('/api/screens', upload.single('image'), (req, res) => {
       status: 'pending' // Moderatsiyada kutilmoqda!
     };
 
-    screens.unshift(newScreen);
-    writeScreens(screens);
+    await updateScreens(screens => { screens.unshift(newScreen); });
 
     console.log('Yangi ariza kelib tushdi (moderatsiyada):', newScreen.name);
     return res.json({
@@ -276,21 +244,21 @@ app.post('/api/screens', upload.single('image'), (req, res) => {
 });
 
 // ============================================================================
-// 7. ADMIN VA MODERATSIYA API
+// 6. ADMIN VA MODERATSIYA API
 // ============================================================================
 
 // Admin kirish (Login)
-app.post('/api/admin/login', (req, res) => {
+app.post('/api/admin/login', async (req, res) => {
   const { password } = req.body;
   if (!password) {
     return res.status(400).json({ success: false, message: 'Parol kiritilmadi!' });
   }
 
-  const currentHash = getStoredPasswordHash();
+  const currentHash = await getStoredPasswordHash();
   const inputHash = hashPassword(password.trim());
 
   if (inputHash === currentHash) {
-    const token = createAdminToken();
+    const token = await createAdminToken();
     return res.json({
       success: true,
       token: token,
@@ -312,7 +280,7 @@ app.post('/api/admin/logout', requireAdminAuth, (req, res) => {
 });
 
 // Parolni o'zgartirish (Eski parol + yangi parol 2 marta)
-app.post('/api/admin/change-password', requireAdminAuth, (req, res) => {
+app.post('/api/admin/change-password', requireAdminAuth, async (req, res) => {
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
 
@@ -320,7 +288,7 @@ app.post('/api/admin/change-password', requireAdminAuth, (req, res) => {
       return res.status(400).json({ success: false, message: 'Barcha maydonlarni to‘ldiring!' });
     }
 
-    const currentHash = getStoredPasswordHash();
+    const currentHash = await getStoredPasswordHash();
     if (hashPassword(oldPassword.trim()) !== currentHash) {
       return res.status(400).json({ success: false, message: 'Amaldagi eski parol noto‘g‘ri!' });
     }
@@ -333,7 +301,7 @@ app.post('/api/admin/change-password', requireAdminAuth, (req, res) => {
       return res.status(400).json({ success: false, message: 'Yangi parol kamida 4 ta belgidan iborat bo‘lishi kerak!' });
     }
 
-    setStoredPasswordHash(hashPassword(newPassword.trim()));
+    await setStoredPasswordHash(hashPassword(newPassword.trim()));
     console.log('Admin paroli muvaffaqiyatli o\'zgartirildi');
 
     return res.json({
@@ -347,24 +315,25 @@ app.post('/api/admin/change-password', requireAdminAuth, (req, res) => {
 });
 
 // Barcha arizalarni olish (Statistika bilan)
-app.get('/api/admin/screens', requireAdminAuth, (req, res) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
-
-  const screens = readScreens();
-  const stats = {
-    total: screens.length,
-    pending: screens.filter(s => s.status === 'pending').length,
-    approved: screens.filter(s => s.status === 'approved').length,
-    rejected: screens.filter(s => s.status === 'rejected').length
-  };
-  res.json({ screens, stats });
+app.get('/api/admin/screens', requireAdminAuth, async (req, res) => {
+  noCache(res);
+  try {
+    const screens = await readScreens();
+    const stats = {
+      total: screens.length,
+      pending: screens.filter(s => s.status === 'pending').length,
+      approved: screens.filter(s => s.status === 'approved').length,
+      rejected: screens.filter(s => s.status === 'rejected').length
+    };
+    res.json({ screens, stats, persistent: storage.useBlob || !process.env.VERCEL });
+  } catch (err) {
+    console.error('Arizalarni o\'qishda xatolik:', err);
+    res.status(500).json({ success: false, message: 'Server xatoligi yuz berdi' });
+  }
 });
 
 // Arizaning statusini o'zgartirish (Tasdiqlash / Rad etish / Kutilmoqda)
-app.patch('/api/admin/screens/:id/status', requireAdminAuth, (req, res) => {
+app.patch('/api/admin/screens/:id/status', requireAdminAuth, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
@@ -372,44 +341,58 @@ app.patch('/api/admin/screens/:id/status', requireAdminAuth, (req, res) => {
     return res.status(400).json({ success: false, message: 'Noto‘g‘ri status!' });
   }
 
-  const screens = readScreens();
-  const screenIndex = screens.findIndex(s => s.id === id);
+  try {
+    const screen = await updateScreens(screens => {
+      const s = screens.find(x => x.id === id);
+      if (!s) return null;
+      s.status = status;
+      s.updatedAt = new Date().toISOString();
+      return s;
+    });
 
-  if (screenIndex === -1) {
-    return res.status(404).json({ success: false, message: 'Bunday ekran topilmadi!' });
+    if (!screen) {
+      return res.status(404).json({ success: false, message: 'Bunday ekran topilmadi!' });
+    }
+
+    const statusName = status === 'approved' ? 'tasdiqlandi va efirga chiqdi' : (status === 'rejected' ? 'rad etildi' : 'kutilmoqdaga qaytarildi');
+    console.log(`Ekran [${screen.name}] ${statusName}`);
+
+    return res.json({
+      success: true,
+      message: `Ekran muvaffaqiyatli ${statusName}!`,
+      screen
+    });
+  } catch (err) {
+    console.error('Statusni o\'zgartirishda xatolik:', err);
+    return res.status(500).json({ success: false, message: 'Server xatoligi yuz berdi' });
   }
-
-  screens[screenIndex].status = status;
-  screens[screenIndex].updatedAt = new Date().toISOString();
-  writeScreens(screens);
-
-  const statusName = status === 'approved' ? 'tasdiqlandi va efirga chiqdi' : (status === 'rejected' ? 'rad etildi' : 'kutilmoqdaga qaytarildi');
-  console.log(`Ekran [${screens[screenIndex].name}] ${statusName}`);
-
-  return res.json({
-    success: true,
-    message: `Ekran muvaffaqiyatli ${statusName}!`,
-    screen: screens[screenIndex]
-  });
 });
 
 // Arizani butunlay o'chirish
-app.delete('/api/admin/screens/:id', requireAdminAuth, (req, res) => {
+app.delete('/api/admin/screens/:id', requireAdminAuth, async (req, res) => {
   const { id } = req.params;
-  const screens = readScreens();
-  const filtered = screens.filter(s => s.id !== id);
+  try {
+    const removed = await updateScreens(screens => {
+      const idx = screens.findIndex(s => s.id === id);
+      if (idx === -1) return null;
+      return screens.splice(idx, 1)[0];
+    });
 
-  if (filtered.length === screens.length) {
-    return res.status(404).json({ success: false, message: 'Bunday ekran topilmadi!' });
+    if (!removed) {
+      return res.status(404).json({ success: false, message: 'Bunday ekran topilmadi!' });
+    }
+
+    await storage.deleteImage(removed.imageUrl);
+    console.log(`Ekran o'chirildi: ${id}`);
+    return res.json({ success: true, message: 'Ekran muvaffaqiyatli o‘chirildi!' });
+  } catch (err) {
+    console.error('O\'chirishda xatolik:', err);
+    return res.status(500).json({ success: false, message: 'Server xatoligi yuz berdi' });
   }
-
-  writeScreens(filtered);
-  console.log(`Ekran o'chirildi: ${id}`);
-  return res.json({ success: true, message: 'Ekran muvaffaqiyatli o‘chirildi!' });
 });
 
 // ============================================================================
-// 8. SAHIFALAR
+// 7. SAHIFALAR
 // ============================================================================
 
 // Admin panel sahifasi (faqat /admin yo'li orqali)
@@ -429,6 +412,7 @@ if (!process.env.VERCEL) {
     console.log(` Server muvaffaqiyatli ishga tushdi:`);
     console.log(` http://localhost:${PORT}`);
     console.log(` Admin panel: http://localhost:${PORT}/admin`);
+    console.log(` Saqlash: ${storage.useBlob ? 'Vercel Blob' : 'Lokal fayllar'}`);
     console.log(`=========================================`);
   });
 }
