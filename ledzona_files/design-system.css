@@ -1,0 +1,703 @@
+/**
+ * LEDZONA DESIGN SYSTEM (Senior UI/UX Expert Edition)
+ * Minimalist, high-contrast, fully responsive, and pixel-perfect.
+ */
+
+:root {
+  --bg-primary: #070a10;
+  --bg-surface: #0e1422;
+  --bg-card: rgba(14, 20, 32, 0.85);
+  
+  --emerald-main: #10b981;
+  --emerald-hover: #059669;
+  --emerald-light: #34d399;
+  --emerald-glow: rgba(16, 185, 129, 0.4);
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-sub: #64748b;
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(16, 185, 129, 0.5);
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  
+  --transition-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   1. GLOBAL STYLES & RESET
+   ========================================================================== */
+html, body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-main) !important;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  scroll-behavior: smooth !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(16, 185, 129, 0.3) !important;
+  color: #ffffff !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--emerald-main);
+}
+
+/* ==========================================================================
+   2. SCROLL REVEAL ANIMATIONS
+   ========================================================================== */
+.r.t-rec {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.r.t-rec.lz-revealed,
+#rec4758242503.r.t-rec,
+#rec5136870403.r.t-rec {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Offset body for fixed header */
+body {
+  padding-top: 81px !important;
+}
+
+/* ==========================================================================
+   3. HEADER & NAVBAR (rec4758242503) - FIXED POSITION & UNIFIED THEME
+   ========================================================================== */
+#rec4758242503 {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  height: 81px !important;
+  z-index: 999999 !important;
+  background-color: rgba(7, 10, 16, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+#rec4758242503.lz-scrolled {
+  background-color: rgba(7, 10, 16, 0.98) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.2) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65) !important;
+}
+
+/* Header Navigatsiya linklari (Yagona zamonaviy ko'rinish) */
+#rec4758242503 .tn-elem[data-elem-type="text"] .tn-atom {
+  color: #cbd5e1 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+  letter-spacing: -0.1px !important;
+  transition: var(--transition-smooth) !important;
+}
+#rec4758242503 .tn-elem[data-elem-type="text"]:hover .tn-atom {
+  color: var(--emerald-main) !important;
+  text-shadow: 0 0 12px rgba(16, 185, 129, 0.45) !important;
+}
+
+/* Faol havola: Bosh sahifa (zumrad yashil + ostki chiroyli chiziq) */
+#rec4758242503 .tn-elem[data-elem-id="1791905745932000001"] .tn-atom {
+  color: var(--emerald-main) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 14px rgba(16, 185, 129, 0.35) !important;
+  position: relative !important;
+}
+#rec4758242503 .tn-elem[data-elem-id="1791905745932000001"] .tn-atom::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -4px !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 2px !important;
+  background: var(--emerald-main) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 0 8px var(--emerald-glow) !important;
+}
+
+/* HEADER TUGMASI (Reklama joylashtirish - Emerald Gradient) */
+#rec4758242503 .tn-elem[data-elem-id="1791906428383"] .tn-atom,
+#rec4758242503 .tn-elem[data-elem-id="1791906428383"] a.tn-atom {
+  background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-hover) 100%) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 15px var(--emerald-glow) !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: var(--transition-smooth) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#rec4758242503 .tn-elem[data-elem-id="1791906428383"] .tn-atom .tn-atom__button-text,
+#rec4758242503 .tn-elem[data-elem-id="1791906428383"] .tn-atom span {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 13.5px !important;
+  letter-spacing: 0.2px !important;
+}
+
+#rec4758242503 .tn-elem[data-elem-id="1791906428383"]:hover .tn-atom,
+#rec4758242503 .tn-elem[data-elem-id="1791906428383"]:hover a.tn-atom {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 22px rgba(16, 185, 129, 0.6) !important;
+  background: linear-gradient(135deg, var(--emerald-hover) 0%, #047857 100%) !important;
+}
+
+/* Header telefon raqami */
+#rec4758242503 .tn-elem[data-elem-id="1791905644681"] .tn-atom {
+  color: #f1f5f9 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  transition: var(--transition-smooth) !important;
+}
+#rec4758242503 .tn-elem[data-elem-id="1791905644681"] .tn-atom:hover {
+  color: var(--emerald-light) !important;
+}
+
+/* ==========================================================================
+   4. HERO SEKSIYASI (rec4760252103) & BUTTON IYERARXIYASI (1-talab)
+   ========================================================================== */
+#rec4760252103 {
+  background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 65%) !important;
+}
+
+/* Asosiy (Primary) CTA Tugma: Reklama joylashtirish -> To'liq gradient */
+#rec4760252103 .tn-elem[data-elem-id="1791960041401000003"] a.tn-atom,
+#rec4760252103 .tn-elem[data-elem-id="1791960041401000003"] .tn-atom {
+  background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-hover) 100%) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 4px 20px var(--emerald-glow) !important;
+  transition: var(--transition-smooth) !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+#rec4760252103 .tn-elem[data-elem-id="1791960041401000003"] a.tn-atom:hover,
+#rec4760252103 .tn-elem[data-elem-id="1791960041401000003"] .tn-atom:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.55) !important;
+}
+
+/* Muhimligi past (Secondary) Tugma: LED ekranlarni ko'rish -> OUTLINE USLUB (1-talab) */
+#rec4760252103 .tn-elem[data-elem-id="1791959351886"] a.tn-atom,
+#rec4760252103 .tn-elem[data-elem-id="1791959351886"] .tn-atom {
+  background: transparent !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: var(--radius-md) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-smooth) !important;
+  backdrop-filter: blur(8px) !important;
+}
+#rec4760252103 .tn-elem[data-elem-id="1791959351886"] a.tn-atom:hover,
+#rec4760252103 .tn-elem[data-elem-id="1791959351886"] .tn-atom:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--emerald-main) !important;
+  color: var(--emerald-main) !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.25) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ==========================================================================
+   5. RAQAMLAR VA STATISTIKA (rec4768231303)
+   ========================================================================== */
+#rec4768231303 {
+  background: #090e17 !important;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ==========================================================================
+   6. 5 TA QADAM SEKSIYASI (rec4795873503) - 3-KARTANI TUZATISH (3-talab)
+   ========================================================================== */
+/* Barcha 5 ta kartochka sarlavhalari bir xil oq va aniq bo'lishi kerak */
+#rec4795873503 .tn-elem[data-elem-id="1792027281033000022"] .tn-atom, /* 1. Ariza qoldiring */
+#rec4795873503 .tn-elem[data-elem-id="1792027445159000024"] .tn-atom, /* 2. Reklamangizni yuboring */
+#rec4795873503 .tn-elem[data-elem-id="1792027575258000026"] .tn-atom, /* 3. Biz bog'lanamiz -> FIX */
+#rec4795873503 .tn-elem[data-elem-id="1792027695891000028"] .tn-atom, /* 4. Mos LED ekran topiladi */
+#rec4795873503 .tn-elem[data-elem-id="1792027272796000020"] .tn-atom  /* 5. Reklama joylashtiriladi */ {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 19px !important;
+  letter-spacing: -0.2px !important;
+  transition: color 0.2s ease;
+}
+
+/* Barcha 5 ta doira shakllari (1, 2, 3, 4, 5) bir xil nurli va chiroyli bo'lishi kerak */
+#rec4795873503 .tn-elem[data-elem-id="1792026698174000007"] .tn-atom, /* 1 doira */
+#rec4795873503 .tn-elem[data-elem-id="1792026707580000010"] .tn-atom, /* 2 doira */
+#rec4795873503 .tn-elem[data-elem-id="1792026722340000013"] .tn-atom, /* 3 doira -> FIX */
+#rec4795873503 .tn-elem[data-elem-id="1792026782403000016"] .tn-atom, /* 4 doira */
+#rec4795873503 .tn-elem[data-elem-id="1792026506786000003"] .tn-atom  /* 5 doira */ {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.45) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.15) !important;
+  transition: var(--transition-smooth) !important;
+}
+
+/* Barcha 5 ta raqam matnlari (1, 2, 3, 4, 5) bir xil zumrad rangida bo'lishi kerak */
+#rec4795873503 .tn-elem[data-elem-id="1792026698174000008"] .tn-atom, /* 1 */
+#rec4795873503 .tn-elem[data-elem-id="1792026707580000011"] .tn-atom, /* 2 */
+#rec4795873503 .tn-elem[data-elem-id="1792026722340000014"] .tn-atom, /* 3 -> FIX (oldin qorong'i edi) */
+#rec4795873503 .tn-elem[data-elem-id="1792026782403000017"] .tn-atom, /* 4 */
+#rec4795873503 .tn-elem[data-elem-id="1792026565079000004"] .tn-atom  /* 5 */ {
+  color: var(--emerald-light) !important;
+  font-weight: 800 !important;
+  font-size: 20px !important;
+}
+
+/* ==========================================================================
+   7. BOG'LANISH (CONTACT CTA) BANNERI (rec4836087003) - OUTLINE TUGMA (1-talab)
+   ========================================================================== */
+#rec4836087003 .tn-elem[data-elem-type="shape"] .tn-atom {
+  border-radius: var(--radius-xl) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12) 0%, rgba(15, 21, 35, 0.95) 70%) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Telefon raqam tugmasi: Muhimligi past -> OUTLINE (1-talab, 4-rasm) */
+#rec4836087003 .tn-elem[data-elem-id="1792134138287000004"] a.tn-atom,
+#rec4836087003 .tn-elem[data-elem-id="1792134138287000004"] .tn-atom {
+  background: transparent !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: var(--radius-md) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-smooth) !important;
+}
+#rec4836087003 .tn-elem[data-elem-id="1792134138287000004"] a.tn-atom:hover,
+#rec4836087003 .tn-elem[data-elem-id="1792134138287000004"] .tn-atom:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--emerald-main) !important;
+  color: var(--emerald-main) !important;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.25) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Telegram orqali bog'lanish tugmasi -> To'liq zumrad gradient (Primary) */
+#rec4836087003 .tn-elem[data-elem-id="1792135072015000005"] a.tn-atom,
+#rec4836087003 .tn-elem[data-elem-id="1792135072015000005"] .tn-atom {
+  background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-hover) 100%) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 6px 25px var(--emerald-glow) !important;
+  transition: var(--transition-smooth) !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 700 !important;
+}
+#rec4836087003 .tn-elem[data-elem-id="1792135072015000005"] a.tn-atom:hover,
+#rec4836087003 .tn-elem[data-elem-id="1792135072015000005"] .tn-atom:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 10px 35px rgba(16, 185, 129, 0.6) !important;
+}
+
+/* ==========================================================================
+   8. FORMA SEKSIYASI (rec5136870403)
+   ========================================================================== */
+#rec5136870403 {
+  background: radial-gradient(circle at 50% 15%, rgba(16, 185, 129, 0.06) 0%, transparent 65%) !important;
+  padding-bottom: 90px !important;
+  position: relative !important;
+}
+
+#rec5136870403 .t396__artboard {
+  height: auto !important;
+  min-height: 980px !important;
+  padding-bottom: 80px !important;
+  overflow: visible !important;
+}
+#rec5136870403 .t396__carrier,
+#rec5136870403 .t396__filter {
+  height: 100% !important;
+}
+
+#rec5136870403 .tn-elem[data-elem-id="1792924985228000003"] {
+  display: none !important;
+}
+#rec5136870403 .tn-elem[data-elem-id="1792998208120000001"] {
+  display: none !important;
+}
+
+#rec5136870403 .tn-elem[data-elem-id="1792926405257"] {
+  display: block !important;
+  position: relative !important;
+  top: 180px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 540px !important;
+  max-width: 92vw !important;
+  height: auto !important;
+  margin-bottom: 60px !important;
+  background: rgba(14, 20, 32, 0.94) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--radius-xl) !important;
+  padding: 34px 34px 40px 34px !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(16, 185, 129, 0.08) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  z-index: 10 !important;
+}
+
+#rec5136870403 .tn-elem[data-elem-id="1792926405257"] .tn-atom,
+#rec5136870403 .tn-elem[data-elem-id="1792926405257"] form,
+#rec5136870403 .tn-elem[data-elem-id="1792926405257"] .t-form,
+#rec5136870403 .tn-elem[data-elem-id="1792926405257"] .t-input-group,
+#rec5136870403 .tn-elem[data-elem-id="1792926405257"] .t-input-block {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+/* Dropzone va fayl nomi chegaralari (kartochka cho'zilib ketishini oldini olish) */
+.ledzona-dropzone {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+.ledzona-dropzone__preview {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+.ledzona-dropzone__info {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 95px) !important;
+  overflow: hidden !important;
+}
+.ledzona-dropzone__name {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
+  max-width: 100% !important;
+  word-break: break-all !important;
+}
+
+.ledzona-form-trust {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin-top: 15px !important;
+  font-size: 12.5px !important;
+  color: var(--text-muted) !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+}
+
+.ledzona-form-trust svg {
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px !important;
+  min-height: 15px !important;
+  fill: #64748b !important;
+  flex-shrink: 0 !important;
+}
+
+@media screen and (max-width: 640px) {
+  #rec5136870403 .tn-elem[data-elem-id="1792926405257"] {
+    top: 150px !important;
+    width: 94% !important;
+    padding: 24px 18px 32px 18px !important;
+  }
+}
+
+/* ==========================================================================
+   9. TILDA BLOKINI BUTUNLAY YO'Q QILISH (4-talab)
+   ========================================================================== */
+#tildacopy,
+.t-tildalabel,
+.t-tildalabel-free,
+.t-tildalabel-free__main,
+.t-tildalabel-free__links-wr {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ==========================================================================
+   10. FAQ SEKSIYASI (rec4848042303) - INTERAKTIV DROPDOWN ACCORDION
+   ========================================================================== */
+#rec4848042303 {
+  background: radial-gradient(circle at 50% 25%, rgba(16, 185, 129, 0.05) 0%, transparent 70%) !important;
+  overflow: visible !important;
+  padding-bottom: 70px !important;
+}
+
+#rec4848042303 .t396__artboard {
+  height: auto !important;
+  min-height: 580px !important;
+  padding-bottom: 80px !important;
+  overflow: visible !important;
+}
+#rec4848042303 .t396__carrier,
+#rec4848042303 .t396__filter {
+  height: 100% !important;
+}
+
+/* Eski qotib qolgan (statik) Tilda shakllari va matnlarini yashirish */
+#rec4848042303 .tn-elem[data-elem-id="1792138242562000008"],
+#rec4848042303 .tn-elem[data-elem-id="1792138242562000010"],
+#rec4848042303 .tn-elem[data-elem-id="1792138242562000009"],
+#rec4848042303 .tn-elem[data-elem-id="1792138250295000012"],
+#rec4848042303 .tn-elem[data-elem-id="1792138250295000014"],
+#rec4848042303 .tn-elem[data-elem-id="1792138250295000013"],
+#rec4848042303 .tn-elem[data-elem-id="1792138045739000003"],
+#rec4848042303 .tn-elem[data-elem-id="1792138141543000005"],
+#rec4848042303 .tn-elem[data-elem-id="1792138110649000004"] {
+  display: none !important;
+}
+
+/* FAQ Sarlavhalari */
+#rec4848042303 .tn-elem[data-elem-id="1792137868217000002"] .tn-atom {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 38px !important;
+  letter-spacing: -0.5px !important;
+}
+#rec4848042303 .tn-elem[data-elem-id="1792137798179"] .tn-atom {
+  color: var(--text-muted) !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+
+/* Yangi zamonaviy Dropdown Accordion konteyneri */
+.lz-faq-accordion {
+  position: relative !important;
+  top: 230px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 780px !important;
+  max-width: 92vw !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  z-index: 20 !important;
+  margin-bottom: 50px !important;
+}
+
+@media screen and (max-width: 960px) {
+  .lz-faq-accordion {
+    top: 190px !important;
+    width: 90vw !important;
+  }
+}
+@media screen and (max-width: 640px) {
+  .lz-faq-accordion {
+    top: 155px !important;
+    width: 94vw !important;
+    gap: 10px !important;
+  }
+}
+
+.lz-faq-item {
+  background: rgba(14, 20, 32, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-md) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  overflow: hidden !important;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.lz-faq-item:hover {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: rgba(16, 24, 38, 0.95) !important;
+  transform: translateY(-2px) !important;
+}
+
+.lz-faq-item.lz-open {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  background: rgba(16, 24, 38, 0.98) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 24px rgba(16, 185, 129, 0.12) !important;
+}
+
+.lz-faq-trigger {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 22px 26px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-size: 17.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.2px !important;
+  transition: color 0.2s ease !important;
+  font-family: inherit !important;
+}
+
+.lz-faq-item.lz-open .lz-faq-trigger {
+  color: var(--emerald-light) !important;
+}
+
+.lz-faq-chevron {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease !important;
+  color: #cbd5e1 !important;
+  flex-shrink: 0 !important;
+}
+
+.lz-faq-chevron svg {
+  width: 16px !important;
+  height: 16px !important;
+  stroke: currentColor !important;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.lz-faq-item.lz-open .lz-faq-chevron {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  color: var(--emerald-light) !important;
+  transform: rotate(180deg) !important;
+}
+
+.lz-faq-collapse {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+  transition: max-height 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease !important;
+}
+
+.lz-faq-item.lz-open .lz-faq-collapse {
+  max-height: 300px !important;
+  opacity: 1 !important;
+}
+
+.lz-faq-content {
+  padding: 0 26px 22px 26px !important;
+  color: #94a3b8 !important;
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding-top: 16px !important;
+}
+
+/* ==========================================================================
+   11. YAGONA DIZAYN TIZIMI (UNIFIED DESIGN SYSTEM): PILL BADGES & SURFACES
+   ========================================================================== */
+/* Barcha sectionlarning kichik kategoriya nishonlari (Pill Badges) bir xil formatda */
+#rec4760252103 .tn-elem[data-elem-id="1791960423782"] .tn-atom, /* Ishonchli va shaffof shartlar */
+#rec4795294703 .tn-elem[data-elem-id="1791989273110000001"] .tn-atom, /* Sizga qanday yordam beramiz */
+#rec4808861303 .tn-elem[data-elem-id="1792047488805000002"] .tn-atom, /* KENG AUDITORIYA JALB QILING */
+#rec4809365303 .tn-elem[data-elem-id="1792079466956000002"] .tn-atom, /* BIZ HAQIMIZDA */
+#rec4836087003 .tn-elem[data-elem-id="1792133873498000002"] .tn-atom, /* REKLAMANGIZNI JOYLASHTIRING */
+#rec4848042303 .tn-elem[data-elem-id="1792137837083000001"] .tn-atom, /* SAVOL VA JAVOBLAR */
+#rec4857068303 .tn-elem[data-elem-id="1792148197779000001"] .tn-atom  /* BOG'LANISH */ {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: var(--emerald-light) !important;
+  border-radius: 999px !important;
+  padding: 4px 16px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.4px !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.14) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+
+/* Barcha kartochka shakllari (rec4809365303 Biz haqimizda, rec4768231303 Raqamlar) */
+#rec4809365303 .tn-elem[data-elem-type="shape"] .tn-atom,
+#rec4768231303 .tn-elem[data-elem-type="shape"] .tn-atom {
+  background: rgba(14, 20, 32, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-md) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  transition: var(--transition-smooth) !important;
+}
+
+#rec4809365303 .tn-elem[data-elem-type="shape"]:hover .tn-atom,
+#rec4768231303 .tn-elem[data-elem-type="shape"]:hover .tn-atom {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(16, 185, 129, 0.12) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Statistika raqamlari (1000+, 10+, 20+) toza zumrad rangida */
+#rec4768231303 .tn-elem[data-elem-id="1791986423403"] .tn-atom,
+#rec4768231303 .tn-elem[data-elem-id="1791986519179"] .tn-atom,
+#rec4768231303 .tn-elem[data-elem-id="1791986532298"] .tn-atom {
+  color: var(--emerald-light) !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 25px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Keng auditoriya jalb qiling tugmasi (rec4808861303) */
+#rec4808861303 .tn-elem[data-elem-id="1792047488805000004"] a.tn-atom,
+#rec4808861303 .tn-elem[data-elem-id="1792047488805000004"] .tn-atom {
+  background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-hover) 100%) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 4px 20px var(--emerald-glow) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border: none !important;
+  transition: var(--transition-smooth) !important;
+}
+#rec4808861303 .tn-elem[data-elem-id="1792047488805000004"]:hover .tn-atom {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6) !important;
+}

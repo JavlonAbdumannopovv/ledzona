@@ -1,0 +1,64 @@
+[
+  {
+    "id": "screen-1793471527166",
+    "name": "adsfadsfsafas",
+    "region": "Xorazm viloyati",
+    "address": "asdfadsfadsfas",
+    "description": "asdfasdfasdfasdfsadaf",
+    "imageUrl": "/uploads/1793471527164-34122113.png",
+    "createdAt": "2026-10-31T18:32:07.166Z",
+    "status": "approved",
+    "updatedAt": "2026-10-31T18:37:03.051Z"
+  },
+  {
+    "id": "screen-1793471191774",
+    "name": "dsfsadfasdfas",
+    "region": "Farg'ona viloyati",
+    "address": "asdfasdfasdfsa",
+    "description": "adsfasdfasdfasdfadfa",
+    "imageUrl": "/uploads/1793471191767-74680911.png",
+    "createdAt": "2026-10-31T18:26:31.774Z",
+    "status": "pending"
+  },
+  {
+    "id": "screen-1793434949573",
+    "name": "Ledzona 1",
+    "region": "Andijon viloyati",
+    "address": "sdafasdfasdfa",
+    "description": "asdfasdfasdfasdfa",
+    "imageUrl": "/uploads/1793434949552-416911052.png",
+    "createdAt": "2026-10-31T08:22:29.573Z",
+    "status": "pending",
+    "updatedAt": "2026-10-31T18:36:02.318Z"
+  },
+  {
+    "id": "screen-1793433490327",
+    "name": "Buxoro Markaziy LED",
+    "region": "Buxoro viloyati",
+    "address": "Naqshbandiy ko'chasi",
+    "description": "Katta ekran",
+    "imageUrl": "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
+    "createdAt": "2026-10-31T07:58:10.327Z",
+    "status": "approved"
+  },
+  {
+    "id": "screen-1793432674630",
+    "name": "Amir Temur ko'chasi LED 2",
+    "region": "Toshkent shahri",
+    "address": "Yunusobod tumani, 107-uy",
+    "description": "P4 yuqori aniqlikdagi LED ekran",
+    "imageUrl": "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
+    "createdAt": "2026-10-31T07:44:34.630Z",
+    "status": "approved"
+  },
+  {
+    "id": "screen-1",
+    "name": "Kichik Halqa Yo‘li megamonitori",
+    "region": "Toshkent shahri",
+    "address": "Chilonzor tumani, Bunyodkor ko‘prigi oldi",
+    "description": "Uzun masofadan aniq ko‘rinadigan yuqori kontrastli tashqi panel",
+    "imageUrl": "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
+    "createdAt": "2026-10-31T07:44:24.696Z",
+    "status": "approved"
+  }
+]
