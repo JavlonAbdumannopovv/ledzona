@@ -785,7 +785,13 @@
 
   async function fetchScreensData() {
     try {
-      const res = await fetch('/api/screens');
+      const res = await fetch('/api/screens?_t=' + Date.now(), {
+        cache: 'no-store',
+        headers: {
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'
+        }
+      });
       if (!res.ok) throw new Error('Ekranlarni yuklab bo‘lmadi');
       allScreens = await res.json();
       renderScreens();
@@ -793,6 +799,34 @@
       console.error('Ekranlar yuklashda xatolik:', err);
     }
   }
+
+  // Real vaqt rejimida admin paneldagi o'zgarishlarni qabul qilish va yangilash
+  try {
+    if (window.BroadcastChannel) {
+      const bc = new BroadcastChannel('ledzona_sync_channel');
+      bc.onmessage = (event) => {
+        if (event.data && event.data.type === 'SCREENS_CHANGED') {
+          fetchScreensData();
+        }
+      };
+    }
+  } catch (e) {}
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'ledzona_screens_last_sync') {
+      fetchScreensData();
+    }
+  });
+
+  // Admin paneldan asosiy saytga o'tilganda (tab almashganda) darhol avtomatik yangilash
+  window.addEventListener('focus', () => {
+    fetchScreensData();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      fetchScreensData();
+    }
+  });
 
   function renderScreens() {
     const parentBlock = document.getElementById('rec5153177603');

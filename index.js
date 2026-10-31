@@ -224,6 +224,11 @@ app.use(express.static(__dirname));
 
 // Faqat tasdiqlangan (approved) ekranlarni saytga chiqarish
 app.get('/api/screens', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
+
   const screens = readScreens();
   const approvedScreens = screens.filter(s => s.status === 'approved');
   res.json(approvedScreens);
@@ -343,6 +348,11 @@ app.post('/api/admin/change-password', requireAdminAuth, (req, res) => {
 
 // Barcha arizalarni olish (Statistika bilan)
 app.get('/api/admin/screens', requireAdminAuth, (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
+
   const screens = readScreens();
   const stats = {
     total: screens.length,

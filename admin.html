@@ -1237,6 +1237,16 @@
         }).join('');
       }
 
+      function notifyMainSite() {
+        try {
+          if (window.BroadcastChannel) {
+            const bc = new BroadcastChannel('ledzona_sync_channel');
+            bc.postMessage({ type: 'SCREENS_CHANGED', timestamp: Date.now() });
+          }
+          localStorage.setItem('ledzona_screens_last_sync', Date.now().toString());
+        } catch (e) {}
+      }
+
       // Statusni o'zgartirish (Global window funksiya)
       window.changeScreenStatus = async function(id, newStatus) {
         try {
@@ -1251,6 +1261,7 @@
           const data = await res.json();
           if (res.ok && data.success) {
             showToast(data.message);
+            notifyMainSite();
             loadDashboardData();
           } else {
             showToast(data.message || 'Xatolik yuz berdi', true);
@@ -1271,6 +1282,7 @@
           const data = await res.json();
           if (res.ok && data.success) {
             showToast(data.message);
+            notifyMainSite();
             loadDashboardData();
           } else {
             showToast(data.message || 'Xatolik yuz berdi', true);
