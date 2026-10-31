@@ -1,16 +1,29 @@
 // ============================================================================
 // Doimiy saqlash qatlami (Persistent storage)
 // ----------------------------------------------------------------------------
-// - Vercel'da (BLOB_READ_WRITE_TOKEN mavjud bo'lsa): Vercel Blob ishlatiladi.
-//   Barcha serverless konteynerlar bitta umumiy omborni ko'radi, shuning uchun
-//   formadan qo'shilgan ekranlar admin panelda darhol paydo bo'ladi va
-//   o'chirilganlar qayta tiklanmaydi.
+// - Vercel'da: Vercel Blob (BLOB_READ_WRITE_TOKEN yoki *_READ_WRITE_TOKEN).
+//   Public va Private omborlarning har ikkisi bilan 100% mos ishlaydi.
 // - Lokal muhitda: oddiy fayl tizimi (data/*.json, uploads/).
 // ============================================================================
 const fs = require('fs');
 const path = require('path');
 
-const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+function findBlobToken() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+  for (const [key, val] of Object.entries(process.env)) {
+    if (typeof val === 'string' && (key.endsWith('_READ_WRITE_TOKEN') || val.startsWith('vercel_blob_rw_'))) {
+      return val;
+    }
+  }
+  return null;
+}
+
+const blobToken = findBlobToken();
+if (blobToken && !process.env.BLOB_READ_WRITE_TOKEN) {
+  process.env.BLOB_READ_WRITE_TOKEN = blobToken;
+}
+
+const useBlob = !!blobToken;
 const isVercel = !!process.env.VERCEL;
 
 const baseDataDir = path.join(__dirname, 'data');
@@ -26,12 +39,14 @@ for (const dir of [dataDir, uploadsDir]) {
 
 let blob = null;
 if (useBlob) {
-  blob = require('@vercel/blob');
+  try {
+    blob = require('@vercel/blob');
+  } catch (e) {
+    console.error('[storage] @vercel/blob yuklanmadi:', e);
+  }
 }
 
-if (isVercel && !useBlob) {
-  console.warn('[storage] DIQQAT: BLOB_READ_WRITE_TOKEN topilmadi. Vercel /tmp vaqtinchalik — ma\'lumotlar saqlanib qolmaydi!');
-}
+let detectedAccess = null; // 'public' | 'private'
 
 function readSeed(key) {
   try {
@@ -41,17 +56,40 @@ function readSeed(key) {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Blob: har bir yozuv yangi (tasodifiy nomli) fayl sifatida saqlanadi.
-// O'qishda list() orqali eng oxirgisi olinadi. Shu tufayli CDN keshi
-// eski ma'lumotni qaytarib qo'yish muammosi bo'lmaydi.
-// ---------------------------------------------------------------------------
+// Public yoki Private rejimini avtomatik aniqlab yozish
+async function putWithAutoAccess(pathname, body, options = {}) {
+  const token = blobToken;
+  const opts = { token, ...options };
+
+  if (detectedAccess) {
+    return await blob.put(pathname, body, { ...opts, access: detectedAccess });
+  }
+
+  try {
+    const res = await blob.put(pathname, body, { ...opts, access: 'public' });
+    detectedAccess = 'public';
+    return res;
+  } catch (err) {
+    const isAccessErr = err && (
+      err.name === 'BlobAccessError' ||
+      /private|access|permission|not allowed/i.test(err.message || '')
+    );
+    if (isAccessErr) {
+      console.warn('[storage] Public access rad etildi, Private rejimga o\'tildi');
+      const res = await blob.put(pathname, body, { ...opts, access: 'private' });
+      detectedAccess = 'private';
+      return res;
+    }
+    throw err;
+  }
+}
+
 async function listVersions(key) {
   const prefix = `db/${key}-`;
   let cursor;
   const all = [];
   do {
-    const res = await blob.list({ prefix, cursor, limit: 1000 });
+    const res = await blob.list({ prefix, cursor, limit: 1000, token: blobToken });
     all.push(...res.blobs);
     cursor = res.hasMore ? res.cursor : undefined;
   } while (cursor);
@@ -63,15 +101,31 @@ async function listVersions(key) {
 }
 
 async function readJSON(key, fallback) {
-  if (useBlob) {
-    const versions = await listVersions(key);
-    if (versions.length === 0) {
+  if (useBlob && blob) {
+    try {
+      const versions = await listVersions(key);
+      if (versions.length === 0) {
+        const seed = readSeed(key);
+        return seed !== undefined ? seed : fallback;
+      }
+      const fetchHeaders = {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      };
+      if (blobToken) {
+        fetchHeaders['Authorization'] = `Bearer ${blobToken}`;
+      }
+      const res = await fetch(versions[0].url, {
+        headers: fetchHeaders,
+        cache: 'no-store'
+      });
+      if (!res.ok) throw new Error(`Blob o'qishda xatolik: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.error(`[storage] Blob ${key} o'qishda xatolik:`, err);
       const seed = readSeed(key);
       return seed !== undefined ? seed : fallback;
     }
-    const res = await fetch(versions[0].url, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`Blob o'qishda xatolik: ${res.status}`);
-    return await res.json();
   }
 
   const file = path.join(dataDir, key + '.json');
@@ -89,19 +143,18 @@ async function readJSON(key, fallback) {
 
 async function writeJSON(key, data) {
   const body = JSON.stringify(data, null, 2);
-  if (useBlob) {
+  if (useBlob && blob) {
     const stamp = String(Date.now()).padStart(15, '0');
-    const created = await blob.put(`db/${key}-${stamp}.json`, body, {
-      access: 'public',
+    const created = await putWithAutoAccess(`db/${key}-${stamp}.json`, body, {
       addRandomSuffix: true,
       contentType: 'application/json',
       cacheControlMaxAge: 60
     });
-    // Eski versiyalarni tozalash (xatolik bo'lsa ham asosiy ishga ta'sir qilmaydi)
+    // Eski versiyalarni tozalash
     try {
       const versions = await listVersions(key);
       const old = versions.filter(v => v.url !== created.url).map(v => v.url);
-      if (old.length) await blob.del(old);
+      if (old.length) await blob.del(old, { token: blobToken });
     } catch (e) {
       console.error('[storage] eski versiyalarni o\'chirishda xatolik:', e);
     }
@@ -116,12 +169,15 @@ async function saveImage(file) {
   const ext = path.extname(file.originalname || '').toLowerCase() || '.png';
   const safeName = Date.now() + '-' + Math.round(Math.random() * 1e9) + ext;
 
-  if (useBlob) {
-    const created = await blob.put(`uploads/${safeName}`, file.buffer, {
-      access: 'public',
+  if (useBlob && blob) {
+    const created = await putWithAutoAccess(`uploads/${safeName}`, file.buffer, {
       addRandomSuffix: true,
       contentType: file.mimetype || 'application/octet-stream'
     });
+    // Agar ombor private bo'lsa, rasmni yuklab ko'rsatish uchun proksi orqali uzatamiz
+    if (detectedAccess === 'private') {
+      return '/api/blob-proxy?url=' + encodeURIComponent(created.url);
+    }
     return created.url;
   }
 
@@ -129,14 +185,23 @@ async function saveImage(file) {
   return '/uploads/' + safeName;
 }
 
-// Blob'dagi rasmni o'chirish (lokal fayllarga tegmaydi)
+// Blob'dagi rasmni o'chirish
 async function deleteImage(url) {
-  if (useBlob && url && /^https?:\/\/.*blob\.vercel-storage\.com\//.test(url)) {
-    try { await blob.del(url); } catch (e) { /* ahamiyatsiz */ }
+  if (useBlob && blob && url) {
+    let rawUrl = url;
+    if (url.includes('/api/blob-proxy?url=')) {
+      try {
+        rawUrl = decodeURIComponent(url.split('url=')[1]);
+      } catch (e) {}
+    }
+    if (/^https?:\/\/.*blob\.vercel-storage\.com\//.test(rawUrl)) {
+      try { await blob.del(rawUrl, { token: blobToken }); } catch (e) { /* ahamiyatsiz */ }
+    }
   }
 }
 
 module.exports = {
+  findBlobToken,
   useBlob,
   uploadsDir,
   readJSON,

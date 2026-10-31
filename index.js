@@ -182,6 +182,25 @@ app.use(express.static(__dirname));
 // 5. FOYDALANUVCHILAR UCHUN PUBLIC API
 // ============================================================================
 
+// Private ombordagi rasmlarni ko'rsatish uchun xavfsiz proksi
+app.get('/api/blob-proxy', async (req, res) => {
+  const { url } = req.query;
+  if (!url || typeof url !== 'string') return res.status(400).end();
+  try {
+    const token = storage.findBlobToken ? storage.findBlobToken() : process.env.BLOB_READ_WRITE_TOKEN;
+    const headers = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const upstream = await fetch(url, { headers });
+    if (!upstream.ok) return res.status(upstream.status).end();
+    res.setHeader('Content-Type', upstream.headers.get('content-type') || 'image/jpeg');
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    const buffer = Buffer.from(await upstream.arrayBuffer());
+    res.send(buffer);
+  } catch (e) {
+    res.status(500).end();
+  }
+});
+
 // Faqat tasdiqlangan (approved) ekranlarni saytga chiqarish
 app.get('/api/screens', async (req, res) => {
   noCache(res);
