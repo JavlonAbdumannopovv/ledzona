@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Barcha Mavjud LED Ekranlar — LEDZONE.UZ</title>
+  <meta name="description" content="O‘zbekiston bo‘ylab barcha faol va reklama joylashtirish uchun ochiq bo‘lgan yirik LED ekranlar katalogi.">
+  <link rel="icon" type="image/png" href="./ledzona_files/favicon.ico">
+
+  <!-- Inter va Unbounded shriftlari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #070a10;
+      --bg-surface: #0e1420;
+      --bg-card: #121826;
+      --bg-card-hover: #162032;
+      --emerald-main: #10b981;
+      --emerald-hover: #059669;
+      --emerald-light: #34d399;
+      --emerald-glow: rgba(16, 185, 129, 0.35);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(16, 185, 129, 0.5);
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--emerald-main);
+    }
+
+    /* 1. Navbar */
+    .screens-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      background: rgba(7, 10, 16, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .screens-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .screens-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #fff;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .screens-logo-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--emerald-main), var(--emerald-hover));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px var(--emerald-glow);
+    }
+
+    .screens-logo-badge svg {
+      width: 14px;
+      height: 14px;
+      fill: #fff;
+    }
+
+    .screens-logo span {
+      color: var(--emerald-main);
+    }
+
+    .screens-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s ease;
+    }
+
+    .screens-back-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(-2px);
+    }
+
+    .screens-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .screens-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .screens-nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .screens-nav-link:hover {
+      color: #fff;
+    }
+
+    .screens-nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-hover) 100%);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 24px;
+      box-shadow: 0 4px 15px var(--emerald-glow);
+      transition: all 0.25s ease;
+    }
+
+    .screens-nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Mobil Menyu Tugmasi */
+    .screens-menu-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      background: rgba(18, 24, 38, 0.9);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      padding: 0;
+      transition: all 0.2s ease;
+    }
+
+    .screens-menu-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--emerald-main);
+      border-radius: 2px;
+      transition: all 0.25s ease;
+    }
+
+    /* Mobil Drawer */
+    .screens-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .screens-drawer-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .screens-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 300px;
+      max-width: 85vw;
+      background: #0b1017;
+      border-left: 1px solid var(--border-subtle);
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .screens-drawer.open {
+      transform: translateX(0);
+    }
+
+    .screens-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .screens-drawer-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .screens-drawer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .screens-drawer-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .screens-drawer-link svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--emerald-main);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .screens-drawer-link:hover {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #fff;
+    }
+
+    .screens-drawer-cta {
+      display: block;
+      text-align: center;
+      background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-hover) 100%);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14.5px;
+      font-weight: 700;
+      padding: 13px 20px;
+      border-radius: 14px;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px var(--emerald-glow);
+    }
+
+    .screens-drawer-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .drawer-phone {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--emerald-light);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .drawer-phone svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: var(--emerald-main);
+      stroke-width: 2;
+    }
+
+    .drawer-tg {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .drawer-tg:hover {
+      color: #fff;
+    }
+
+    /* 2. Container */
+    .screens-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px 80px 20px;
+      flex: 1;
+    }
+
+    /* Section Header */
+    .screens-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .screens-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      color: var(--emerald-light);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald-main);
+      box-shadow: 0 0 10px var(--emerald-main);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .screens-title {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .screens-subtitle {
+      font-size: clamp(14px, 1.8vw, 16px);
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Toolbar */
+    .screens-toolbar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .toolbar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .screens-search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .screens-search-box svg {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .screens-search-box input {
+      width: 100%;
+      background: rgba(7, 10, 16, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 13px 16px 13px 46px;
+      color: #fff;
+      font-size: 14.5px;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .screens-search-box input:focus {
+      border-color: var(--emerald-main);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .screens-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: var(--emerald-light);
+      font-size: 13.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .screens-filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .filter-pill {
+      background: rgba(7, 10, 16, 0.7);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .filter-pill:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .filter-pill.active {
+      background: var(--emerald-main);
+      color: #fff;
+      border-color: var(--emerald-main);
+      box-shadow: 0 4px 14px var(--emerald-glow);
+    }
+
+    /* Cards Grid */
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .screen-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+      position: relative;
+      animation: cardFadeIn 0.35s ease forwards;
+    }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .screen-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(16, 185, 129, 0.35);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 25px rgba(16, 185, 129, 0.12);
+    }
+
+    .screen-card-img-box {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      overflow: hidden;
+      background: #000;
+      cursor: pointer;
+    }
+
+    .screen-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Rasm slayderi boshqaruv tugmalari */
+    .screen-card-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(7, 10, 16, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 18px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 4;
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+    .screen-card-arrow:hover {
+      background: var(--emerald-main);
+      border-color: var(--emerald-main);
+      transform: translateY(-50%) scale(1.1);
+    }
+    .screen-card-arrow.prev { left: 8px; }
+    .screen-card-arrow.next { right: 8px; }
+
+    .screen-card-dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 4;
+      background: rgba(7, 10, 16, 0.7);
+      padding: 4px 8px;
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+    }
+    .screen-card-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .screen-card-dot.active {
+      background: var(--emerald-main);
+      transform: scale(1.3);
+      box-shadow: 0 0 6px var(--emerald-glow);
+    }
+    .screen-card-count {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(7, 10, 16, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    /* Lightbox Modal */
+    .screens-lightbox-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(10px);
+      z-index: 20000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .screens-lightbox-modal.active {
+      display: flex;
+    }
+    .screens-lightbox-content {
+      position: relative;
+      max-width: 900px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .screens-lightbox-img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .screens-lightbox-close {
+      position: absolute;
+      top: -45px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .screens-lightbox-close:hover {
+      background: rgba(239, 68, 68, 0.8);
+    }
+    .screens-lightbox-prev,
+    .screens-lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(7, 10, 16, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 28px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .screens-lightbox-prev:hover,
+    .screens-lightbox-next:hover {
+      background: var(--emerald-main);
+    }
+    .screens-lightbox-prev { left: -60px; }
+    .screens-lightbox-next { right: -60px; }
+    @media (max-width: 768px) {
+      .screens-lightbox-prev { left: 10px; }
+      .screens-lightbox-next { right: 10px; }
+      .screens-lightbox-close { top: 10px; right: 10px; }
+    }
+
+    .screen-card:hover .screen-card-img {
+      transform: scale(1.05);
+    }
+
+    .badge-region {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(7, 10, 16, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      z-index: 2;
+    }
+
+    .badge-live {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(16, 185, 129, 0.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 2;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+    }
+
+    .screen-card-content {
+      padding: 18px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 12px;
+    }
+
+    .screen-card-title {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .screen-card-location {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .screen-card-location svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      fill: var(--emerald-main);
+      margin-top: 2px;
+    }
+
+    .screen-card-desc {
+      background: rgba(7, 10, 16, 0.45);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .screen-card-cta {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: var(--emerald-light);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 11px 16px;
+      border-radius: 12px;
+      transition: all 0.22s ease;
+    }
+
+    .screen-card-cta:hover {
+      background: var(--emerald-main);
+      color: #fff;
+      border-color: var(--emerald-main);
+      box-shadow: 0 4px 16px var(--emerald-glow);
+    }
+
+    /* Load More Button Box */
+    .load-more-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .btn-load-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-hover) 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 34px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .btn-load-more:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+      background: linear-gradient(135deg, #34d399 0%, var(--emerald-main) 100%);
+    }
+
+    .btn-load-more svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-load-more:hover svg {
+      transform: translateY(3px);
+    }
+
+    .load-more-info {
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Empty state */
+    .screens-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--bg-surface);
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .screens-empty svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    /* Footer */
+    .screens-footer {
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      padding: 30px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13.5px;
+    }
+
+    .screens-footer a {
+      color: var(--emerald-light);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .screens-navbar {
+        padding: 10px 14px !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+      }
+      .screens-nav-left {
+        gap: 10px !important;
+      }
+      .screens-logo {
+        font-size: 16px !important;
+        gap: 6px !important;
+      }
+      .screens-logo-badge {
+        width: 22px !important;
+        height: 22px !important;
+      }
+      .screens-nav-links {
+        display: none !important;
+      }
+      .screens-menu-toggle {
+        display: flex !important;
+        flex-shrink: 0 !important;
+      }
+      .screens-back-btn span {
+        display: none;
+      }
+      .screens-back-btn {
+        padding: 7px 10px !important;
+        flex-shrink: 0 !important;
+      }
+      .screens-container {
+        padding: 20px 12px 60px 12px !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+      .screens-toolbar {
+        padding: 12px !important;
+        border-radius: 16px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .screens-search-box {
+        min-width: 0 !important;
+        width: 100% !important;
+      }
+      .screens-filter-pills {
+        width: 100% !important;
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        padding-bottom: 4px;
+      }
+      .screens-filter-pills::-webkit-scrollbar {
+        display: none !important;
+      }
+      .screens-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .btn-load-more {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Navbar -->
+  <header class="screens-navbar">
+    <div class="screens-nav-left">
+      <a href="/" class="screens-back-btn" title="Bosh sahifaga qaytish">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7 7l-7-7 7-7"/></svg>
+        <span>Bosh sahifa</span>
+      </a>
+
+      <a href="/" class="screens-logo">
+        <div class="screens-logo-badge">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/></svg>
+        </div>
+        LEDZONE<span>.UZ</span>
+      </a>
+    </div>
+
+    <!-- O'ng tomondagi navigatsiya -->
+    <div class="screens-nav-right">
+      <nav class="screens-nav-links">
+        <a href="/" class="screens-nav-link">Bosh sahifa</a>
+        <a href="/#rec4795873503" class="screens-nav-link">Qanday ishlaydi?</a>
+        <a href="/#rec4809365303" class="screens-nav-link">Biz haqimizda</a>
+        <a href="/#rec5136870403" class="screens-nav-cta">
+          <span>+ Ekran qo‘shish</span>
+        </a>
+      </nav>
+
+      <!-- Mobil menyu tugmasi -->
+      <button type="button" class="screens-menu-toggle" id="screens-menu-toggle" aria-label="Menyu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobil Drawer Menyu -->
+  <div class="screens-drawer-backdrop" id="screens-drawer-backdrop"></div>
+  <aside class="screens-drawer" id="screens-drawer">
+    <div class="screens-drawer-header">
+      <div class="screens-logo">LEDZONE<span>.UZ</span></div>
+      <button type="button" class="screens-drawer-close" id="screens-drawer-close">✕</button>
+    </div>
+    <nav class="screens-drawer-nav">
+      <a href="/" class="screens-drawer-link">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Bosh sahifa
+      </a>
+      <a href="/#rec4795873503" class="screens-drawer-link">
+        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        Qanday ishlaydi?
+      </a>
+      <a href="/#rec4809365303" class="screens-drawer-link">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+        Biz haqimizda
+      </a>
+      <a href="/#rec4848042303" class="screens-drawer-link">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        Ko‘p beriladigan savollar
+      </a>
+      <a href="/#rec5136870403" class="screens-drawer-cta">
+        + LED ekran qo‘shish
+      </a>
+    </nav>
+    <div class="screens-drawer-footer">
+      <a href="tel:+998918012400" class="drawer-phone">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        +998 91 801 24 00
+      </a>
+      <a href="https://t.me/Ulug_2400" target="_blank" class="drawer-tg">
+        Telegram orqali bog‘lanish ↗
+      </a>
+    </div>
+  </aside>
+
+  <!-- 2. Asosiy mazmun -->
+  <main class="screens-container">
+    <div class="screens-header">
+      <div class="screens-badge">
+        <span class="pulse-dot"></span>
+        <span>O‘zbekiston Hududlari</span>
+      </div>
+      <h1 class="screens-title">Barcha Mavjud LED Ekranlar</h1>
+      <p class="screens-subtitle">
+        Respublika bo‘ylab reklama joylashtirish mumkin bo‘lgan barcha tashqi LED ekranlar to‘liq katalogi
+      </p>
+    </div>
+
+    <!-- Toolbar: Qidiruv, Filter va Hisoblagich -->
+    <div class="screens-toolbar">
+      <div class="toolbar-top">
+        <div class="screens-search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="screens-search" placeholder="Ekran nomi yoki manzil bo‘yicha qidiruv...">
+        </div>
+        <div class="screens-count-badge" id="screens-count-badge">
+          <span class="pulse-dot"></span>
+          <span id="screens-counter-text">Yuklanmoqda...</span>
+        </div>
+      </div>
+
+      <div class="screens-filter-pills" id="screens-pills">
+        <!-- Dinamik viloyat tugmalari -->
+      </div>
+    </div>
+
+    <!-- Ekranlar ro'yxati -->
+    <div class="screens-grid" id="screens-grid">
+      <!-- Dinamik kartochkalar -->
+    </div>
+
+    <!-- Yana ko'rsatish tugmasi (Pagination: +10) -->
+    <div class="load-more-box" id="load-more-box" style="display: none;">
+      <button type="button" class="btn-load-more" id="btn-load-more">
+        <span id="btn-load-more-text">Yana 10 ta ko‘rsatish</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="load-more-info" id="load-more-info"></div>
+    </div>
+  </main>
+
+  <!-- 3. Footer -->
+  <footer class="screens-footer">
+    <p>© 2026 <strong>LEDZONE.UZ</strong> — Barcha huquqlar himoyalangan. Savollar bo‘yicha: <a href="https://t.me/Ulug_2400" target="_blank">@Ulug_2400</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      let allScreens = [];
+      let currentFilter = 'all';
+      let searchQuery = '';
+      let visibleLimit = 10; // Dastlab faqat 10 ta ko'rsatiladi
+      const screensMap = {};
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      window.setCardImg = function(id, idx) {
+        const item = screensMap[id];
+        if (!item) return;
+        item.currentIndex = (idx + item.images.length) % item.images.length;
+        const imgEl = document.getElementById('img-' + id);
+        if (imgEl) imgEl.src = item.images[item.currentIndex];
+        const countEl = document.getElementById('count-' + id);
+        if (countEl) countEl.textContent = `📸 ${item.currentIndex + 1}/${item.images.length}`;
+        const dotsEl = document.getElementById('dots-' + id);
+        if (dotsEl) {
+          dotsEl.querySelectorAll('.screen-card-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === item.currentIndex);
+          });
+        }
+      };
+
+      window.shiftCardImg = function(id, dir) {
+        const item = screensMap[id];
+        if (!item) return;
+        window.setCardImg(id, item.currentIndex + dir);
+      };
+
+      let currentLightbox = { images: [], index: 0 };
+      window.openLightbox = function(idOrUrl) {
+        let images = [];
+        let index = 0;
+        if (screensMap[idOrUrl]) {
+          images = screensMap[idOrUrl].images;
+          index = screensMap[idOrUrl].currentIndex || 0;
+        } else if (typeof idOrUrl === 'string') {
+          images = [idOrUrl];
+          index = 0;
+        }
+        currentLightbox = { images, index };
+        updateLightbox();
+        const modal = document.getElementById('screens-lightbox-modal');
+        if (modal) modal.classList.add('active');
+      };
+
+      function updateLightbox() {
+        const { images, index } = currentLightbox;
+        if (!images || !images.length) return;
+        const imgEl = document.getElementById('screens-lightbox-img');
+        if (imgEl) imgEl.src = images[index];
+        const countEl = document.getElementById('screens-lightbox-counter');
+        if (countEl) countEl.textContent = `${index + 1} / ${images.length}`;
+        const prevBtn = document.getElementById('screens-lightbox-prev');
+        const nextBtn = document.getElementById('screens-lightbox-next');
+        if (prevBtn) prevBtn.style.display = images.length > 1 ? 'flex' : 'none';
+        if (nextBtn) nextBtn.style.display = images.length > 1 ? 'flex' : 'none';
+      }
+
+      window.shiftLightbox = function(dir) {
+        const { images, index } = currentLightbox;
+        if (!images || !images.length) return;
+        currentLightbox.index = (index + dir + images.length) % images.length;
+        updateLightbox();
+      };
+
+      async function loadScreens() {
+        try {
+          const res = await fetch('/api/screens?_t=' + Date.now());
+          if (!res.ok) throw new Error('Yuklab bo‘lmadi');
+          allScreens = await res.json();
+          renderPills();
+          renderCards();
+        } catch (e) {
+          console.error(e);
+          document.getElementById('screens-grid').innerHTML = `
+            <div class="screens-empty">
+              <h3 style="color:#ef4444; margin-bottom:8px;">Ma’lumotlarni yuklab bo‘lmadi</h3>
+              <p style="color:#94a3b8;">Internet aloqasini tekshiring va sahifani qayta yuklang.</p>
+            </div>
+          `;
+        }
+      }
+
+      function getFilteredList() {
+        return allScreens.filter(screen => {
+          const matchesFilter = currentFilter === 'all' || 
+            (screen.region && screen.region.toLowerCase().includes(currentFilter.toLowerCase()));
+          const matchesSearch = !searchQuery || 
+            screen.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            (screen.address && screen.address.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (screen.region && screen.region.toLowerCase().includes(searchQuery.toLowerCase()));
+          return matchesFilter && matchesSearch;
+        });
+      }
+
+      function renderPills() {
+        const pillsBox = document.getElementById('screens-pills');
+        const regions = ['all', ...new Set(allScreens.map(s => s.region).filter(Boolean))];
+        
+        pillsBox.innerHTML = regions.map(reg => `
+          <button type="button" class="filter-pill ${currentFilter === reg ? 'active' : ''}" data-region="${reg}">
+            ${reg === 'all' ? 'Barchasi' : reg.replace(' viloyati', '').replace(' Respublikasi', '')}
+          </button>
+        `).join('');
+
+        pillsBox.querySelectorAll('.filter-pill').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentFilter = btn.getAttribute('data-region');
+            visibleLimit = 10; // Filtr o'zgarganda yana 10 tadan boshlanadi
+            renderPills();
+            renderCards();
+          });
+        });
+      }
+
+      function renderCards() {
+        const grid = document.getElementById('screens-grid');
+        const counterText = document.getElementById('screens-counter-text');
+        const loadMoreBox = document.getElementById('load-more-box');
+        const loadMoreBtnText = document.getElementById('btn-load-more-text');
+        const loadMoreInfo = document.getElementById('load-more-info');
+
+        const filtered = getFilteredList();
+        const total = filtered.length;
+        const currentBatch = filtered.slice(0, visibleLimit);
+
+        counterText.textContent = `Jami: ${total} ta faol ekran`;
+
+        if (total === 0) {
+          grid.innerHTML = `
+            <div class="screens-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <h3 style="color:#fff; margin-bottom:8px;">Hech qanday ekran topilmadi</h3>
+              <p style="color:#94a3b8;">Boshqa so‘rov bilan qidiring yoki filtrlarni tozalang.</p>
+            </div>
+          `;
+          loadMoreBox.style.display = 'none';
+          return;
+        }
+
+        grid.innerHTML = currentBatch.map(screen => {
+          const images = (Array.isArray(screen.images) && screen.images.length > 0)
+            ? screen.images
+            : (screen.imageUrl ? [screen.imageUrl] : ['./ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp']);
+          screensMap[screen.id] = { images, currentIndex: 0 };
+
+          const locationText = [screen.region, screen.address].filter(Boolean).join(', ');
+          const telegramMessage = encodeURIComponent(`Assalomu alaykum! Men "${screen.name}" ekrani bo'yicha reklama joylashtirmoqchiman.`);
+          return `
+            <article class="screen-card">
+              <div class="screen-card-img-box" onclick="window.openLightbox('${screen.id}')">
+                <span class="badge-region">📍 ${escapeHtml(screen.region || 'O‘zbekiston')}</span>
+                <span class="badge-live">● Efirda</span>
+                <img id="img-${screen.id}" class="screen-card-img" src="${images[0]}" alt="${escapeHtml(screen.name)}" onerror="this.src='./ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp'">
+                ${images.length > 1 ? `
+                  <button type="button" class="screen-card-arrow prev" onclick="event.stopPropagation(); window.shiftCardImg('${screen.id}', -1)" title="Oldingi rasm">‹</button>
+                  <button type="button" class="screen-card-arrow next" onclick="event.stopPropagation(); window.shiftCardImg('${screen.id}', 1)" title="Keyingi rasm">›</button>
+                  <div class="screen-card-dots" id="dots-${screen.id}">
+                    ${images.map((_, i) => `<span class="screen-card-dot ${i === 0 ? 'active' : ''}" onclick="event.stopPropagation(); window.setCardImg('${screen.id}', ${i})"></span>`).join('')}
+                  </div>
+                  <span class="screen-card-count" id="count-${screen.id}">📸 1/${images.length}</span>
+                ` : ''}
+              </div>
+              <div class="screen-card-content">
+                <h3 class="screen-card-title">${escapeHtml(screen.name)}</h3>
+                <p class="screen-card-location">
+                  <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                  <span>${escapeHtml(locationText)}</span>
+                </p>
+                ${screen.description ? `
+                  <div class="screen-card-desc">${escapeHtml(screen.description)}</div>
+                ` : ''}
+                <a href="https://t.me/Ulug_2400?text=${telegramMessage}" target="_blank" class="screen-card-cta">
+                  <span>Reklama joylashtirish</span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        // Pagination ko'rsatish
+        if (visibleLimit < total) {
+          loadMoreBox.style.display = 'flex';
+          const remaining = total - visibleLimit;
+          const nextCount = Math.min(10, remaining);
+          loadMoreBtnText.textContent = `Yana ${nextCount} ta ko‘rsatish (+${nextCount})`;
+          loadMoreInfo.textContent = `Ko‘rsatilmoqda: ${currentBatch.length} / ${total} ta LED ekran`;
+        } else {
+          if (total > 10) {
+            loadMoreBox.style.display = 'flex';
+            loadMoreBox.innerHTML = `
+              <div class="load-more-info" style="color: var(--emerald-light); font-weight: 600;">
+                ✓ Barcha ${total} ta LED ekran to‘liq ko‘rsatildi
+              </div>
+            `;
+          } else {
+            loadMoreBox.style.display = 'none';
+          }
+        }
+      }
+
+      // Load more tugmasi
+      document.getElementById('btn-load-more').addEventListener('click', () => {
+        visibleLimit += 10;
+        renderCards();
+      });
+
+      // Qidiruv
+      const searchInput = document.getElementById('screens-search');
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        visibleLimit = 10; // Qidiruvda 10 tadan boshlanadi
+        renderCards();
+      });
+
+      // Mobil menyu drawer
+      const menuToggle = document.getElementById('screens-menu-toggle');
+      const drawer = document.getElementById('screens-drawer');
+      const backdrop = document.getElementById('screens-drawer-backdrop');
+      const drawerClose = document.getElementById('screens-drawer-close');
+
+      function toggleDrawer(open) {
+        drawer.classList.toggle('open', open);
+        backdrop.classList.toggle('open', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+
+      if (menuToggle) menuToggle.addEventListener('click', () => toggleDrawer(true));
+      if (backdrop) backdrop.addEventListener('click', () => toggleDrawer(false));
+      if (drawerClose) drawerClose.addEventListener('click', () => toggleDrawer(false));
+
+      // Lightbox hodisalari
+      const lbClose = document.getElementById('screens-lightbox-close');
+      const lbModal = document.getElementById('screens-lightbox-modal');
+      const lbPrev = document.getElementById('screens-lightbox-prev');
+      const lbNext = document.getElementById('screens-lightbox-next');
+      if (lbClose) lbClose.addEventListener('click', () => lbModal.classList.remove('active'));
+      if (lbModal) lbModal.addEventListener('click', (e) => {
+        if (e.target === lbModal) lbModal.classList.remove('active');
+      });
+      if (lbPrev) lbPrev.addEventListener('click', (e) => { e.stopPropagation(); window.shiftLightbox(-1); });
+      if (lbNext) lbNext.addEventListener('click', (e) => { e.stopPropagation(); window.shiftLightbox(1); });
+
+      loadScreens();
+    })();
+  </script>
+
+  <!-- Lightbox Modal -->
+  <div class="screens-lightbox-modal" id="screens-lightbox-modal">
+    <div class="screens-lightbox-content">
+      <button type="button" class="screens-lightbox-close" id="screens-lightbox-close">✕</button>
+      <button type="button" class="screens-lightbox-prev" id="screens-lightbox-prev">‹</button>
+      <img class="screens-lightbox-img" id="screens-lightbox-img" src="" alt="LED ekran">
+      <button type="button" class="screens-lightbox-next" id="screens-lightbox-next">›</button>
+      <div style="margin-top: 12px; color: #fff; font-weight: 600; font-size: 14px;" id="screens-lightbox-counter">1/1</div>
+    </div>
+  </div>
+</body>
+</html>

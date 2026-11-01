@@ -1,23 +1,19 @@
 [
   {
-    "id": "screen-1793433490327",
-    "name": "Buxoro Markaziy LED",
-    "region": "Buxoro viloyati",
-    "address": "Naqshbandiy ko'chasi",
-    "description": "Katta ekran",
-    "imageUrl": "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
-    "createdAt": "2026-10-31T07:58:10.327Z",
-    "status": "approved"
-  },
-  {
-    "id": "screen-1793432674630",
-    "name": "Amir Temur ko'chasi LED 2",
-    "region": "Toshkent shahri",
-    "address": "Yunusobod tumani, 107-uy",
-    "description": "P4 yuqori aniqlikdagi LED ekran",
-    "imageUrl": "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
-    "createdAt": "2026-10-31T07:44:34.630Z",
-    "status": "approved"
+    "id": "screen-1793539817918-4567",
+    "name": "fadsfsadfadsf",
+    "region": "Andijon viloyati",
+    "address": "asdfsadfsadfasd",
+    "description": "sdafasdfasdfasdfasdfafasda",
+    "imageUrl": "/uploads/1793539817915-852643040.jpg",
+    "images": [
+      "/uploads/1793539817915-852643040.jpg",
+      "/uploads/1793539817916-431082256.jpg",
+      "/uploads/1793539817917-67396479.jpg"
+    ],
+    "createdAt": "2026-11-01T13:30:17.918Z",
+    "status": "approved",
+    "updatedAt": "2026-11-01T13:30:27.277Z"
   },
   {
     "id": "screen-1",
@@ -26,7 +22,39 @@
     "address": "Chilonzor tumani, Bunyodkor ko‘prigi oldi",
     "description": "Uzun masofadan aniq ko‘rinadigan yuqori kontrastli tashqi panel",
     "imageUrl": "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
+    "images": [
+      "/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp",
+      "/ledzona_files/AB6AXuAbjtKRAKhnDSuw.png.webp"
+    ],
     "createdAt": "2026-10-31T07:44:24.696Z",
+    "status": "approved"
+  },
+  {
+    "id": "screen-1793432674630",
+    "name": "Amir Temur ko'chasi LED 2",
+    "region": "Toshkent shahri",
+    "address": "Yunusobod tumani, 107-uy",
+    "description": "P4 yuqori aniqlikdagi LED ekran",
+    "imageUrl": "/ledzona_files/AB6AXuAbjtKRAKhnDSuw.png.webp",
+    "images": [
+      "/ledzona_files/AB6AXuAbjtKRAKhnDSuw.png.webp",
+      "/ledzona_files/AB6AXuDLyPqX0VecLXMX.png.webp"
+    ],
+    "createdAt": "2026-10-31T07:44:34.630Z",
+    "status": "approved"
+  },
+  {
+    "id": "screen-1793433490327",
+    "name": "Buxoro Markaziy LED",
+    "region": "Buxoro viloyati",
+    "address": "Naqshbandiy ko'chasi",
+    "description": "Katta formatli yuqori yorug'likka ega shahar markazidagi LED ekran",
+    "imageUrl": "/ledzona_files/AB6AXuDLyPqX0VecLXMX.png.webp",
+    "images": [
+      "/ledzona_files/AB6AXuDLyPqX0VecLXMX.png.webp",
+      "/ledzona_files/Background_5.png.webp"
+    ],
+    "createdAt": "2026-10-31T07:58:10.327Z",
     "status": "approved"
   }
 ]

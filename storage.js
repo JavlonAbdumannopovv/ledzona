@@ -192,7 +192,7 @@ async function deleteImage(url) {
     if (url.includes('/api/blob-proxy?url=')) {
       try {
         rawUrl = decodeURIComponent(url.split('url=')[1]);
-      } catch (e) {}
+      } catch (e) { }
     }
     if (/^https?:\/\/.*blob\.vercel-storage\.com\//.test(rawUrl)) {
       try { await blob.del(rawUrl, { token: blobToken }); } catch (e) { /* ahamiyatsiz */ }

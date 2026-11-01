@@ -213,9 +213,9 @@ app.get('/api/screens', async (req, res) => {
   }
 });
 
-// Yangi ekran taklifi (status boshlang'ich: 'pending')
+// Yangi ekran taklifi (status boshlang'ich: 'pending', 3 tagacha rasm qabul qiladi)
 app.post('/api/screens', (req, res, next) => {
-  upload.single('image')(req, res, (err) => {
+  upload.any()(req, res, (err) => {
     if (err) {
       const msg = err.code === 'LIMIT_FILE_SIZE'
         ? 'Rasm hajmi 4MB dan oshmasligi kerak!'
@@ -232,10 +232,23 @@ app.post('/api/screens', (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Ekran nomi kiritilishi shart!' });
     }
 
-    let imageUrl = '/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp';
-    if (req.file) {
-      imageUrl = await storage.saveImage(req.file);
+    const files = (req.files && Array.isArray(req.files))
+      ? req.files.filter(f => f.mimetype && f.mimetype.startsWith('image/')).slice(0, 3)
+      : (req.file ? [req.file] : []);
+
+    const savedImages = [];
+    for (const f of files) {
+      try {
+        const url = await storage.saveImage(f);
+        if (url) savedImages.push(url);
+      } catch (err) {
+        console.error('Rasm saqlashda xatolik:', err);
+      }
     }
+
+    const mainImageUrl = savedImages.length > 0 
+      ? savedImages[0] 
+      : '/ledzona_files/AB6AXuApGaUgZtrFcE--.png.webp';
 
     const newScreen = {
       id: 'screen-' + Date.now() + '-' + Math.round(Math.random() * 1e4),
@@ -243,14 +256,15 @@ app.post('/api/screens', (req, res, next) => {
       region: (region || '').trim(),
       address: (address || '').trim(),
       description: (description || '').trim(),
-      imageUrl: imageUrl,
+      imageUrl: mainImageUrl, // asosiy rasm
+      images: savedImages.length > 0 ? savedImages : [mainImageUrl], // barcha 3 tagacha rasmlar
       createdAt: new Date().toISOString(),
       status: 'pending' // Moderatsiyada kutilmoqda!
     };
 
     await updateScreens(screens => { screens.unshift(newScreen); });
 
-    console.log('Yangi ariza kelib tushdi (moderatsiyada):', newScreen.name);
+    console.log('Yangi ariza kelib tushdi (moderatsiyada, rasmlar soni:', newScreen.images.length, '):', newScreen.name);
     return res.json({
       success: true,
       message: 'Arizangiz muvaffaqiyatli qabul qilindi! Ma\'lumotlar platforma moderatsiyasidan so\'ng efirga chiqariladi.',
@@ -401,7 +415,13 @@ app.delete('/api/admin/screens/:id', requireAdminAuth, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Bunday ekran topilmadi!' });
     }
 
-    await storage.deleteImage(removed.imageUrl);
+    if (Array.isArray(removed.images)) {
+      for (const imgUrl of removed.images) {
+        await storage.deleteImage(imgUrl);
+      }
+    } else if (removed.imageUrl) {
+      await storage.deleteImage(removed.imageUrl);
+    }
     console.log(`Ekran o'chirildi: ${id}`);
     return res.json({ success: true, message: 'Ekran muvaffaqiyatli o‘chirildi!' });
   } catch (err) {
@@ -413,6 +433,14 @@ app.delete('/api/admin/screens/:id', requireAdminAuth, async (req, res) => {
 // ============================================================================
 // 7. SAHIFALAR
 // ============================================================================
+
+// Barcha LED ekranlar katalogi sahifasi
+app.get('/screens', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens.html'));
+});
+app.get('/screens.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens.html'));
+});
 
 // Admin panel sahifasi (faqat /admin yo'li orqali)
 app.get('/admin', (req, res) => {
