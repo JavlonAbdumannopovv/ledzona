@@ -701,3 +701,638 @@ body {
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6) !important;
 }
+
+
+/* ==========================================================================
+   12. MASTER RESPONSIVE ADAPTATION (MOBILE, TABLET, LAPTOP, DESKTOP)
+   Har qanday qurilmada (320px dan 2560px gacha) mukammal, to'liq moslashuvchan dizayn
+   ========================================================================== */
+
+/* Umumiy xavfsizlik va gorizontal skrollni 100% to'xtatish */
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+#allrecords, .t-records {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+}
+
+.t396__artboard {
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+}
+
+/* ==========================================================================
+   PLASHET VA MOBIL UCHUN HEADER (#rec4758242503)
+   ========================================================================== */
+@media screen and (max-width: 960px) {
+  #rec4758242503 {
+    height: 64px !important;
+    padding: 0 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  body {
+    padding-top: 64px !important;
+  }
+
+  #rec4758242503 .t396__artboard {
+    height: 64px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  #rec4758242503 .t396__carrier,
+  #rec4758242503 .t396__filter {
+    height: 64px !important;
+  }
+
+  /* Logo: chap tomonda aniq va chiroyli */
+  #rec4758242503 .tn-elem[data-elem-id="1791905583429"] {
+    position: absolute !important;
+    left: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 115px !important;
+    height: auto !important;
+    display: block !important;
+    z-index: 10 !important;
+  }
+  #rec4758242503 .tn-elem[data-elem-id="1791905583429"] img {
+    width: 115px !important;
+    height: auto !important;
+  }
+
+  /* Desktop nav linklarini yashirish */
+  #rec4758242503 .tn-elem[data-elem-id="1791906285606000004"],
+  #rec4758242503 .tn-elem[data-elem-id="1791906269394000003"],
+  #rec4758242503 .tn-elem[data-elem-id="1791906314408000005"],
+  #rec4758242503 .tn-elem[data-elem-id="1791905809815000002"],
+  #rec4758242503 .tn-elem[data-elem-id="1791906387461000006"],
+  #rec4758242503 .tn-elem[data-elem-id="1791905745932000001"] {
+    display: none !important;
+  }
+
+  /* Telefon raqam va telefon belgisi */
+  #rec4758242503 .tn-elem[data-elem-id="1791905644681"],
+  #rec4758242503 .tn-elem[data-elem-id="1791906341293"] {
+    display: none !important;
+  }
+
+  /* O'ng tomondagi "Reklama joylashtirish" CTA tugmasi */
+  #rec4758242503 .tn-elem[data-elem-id="1791906428383"] {
+    position: absolute !important;
+    right: 16px !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: auto !important;
+    height: 38px !important;
+    display: block !important;
+    z-index: 10 !important;
+  }
+
+  #rec4758242503 .tn-elem[data-elem-id="1791906428383"] .tn-atom,
+  #rec4758242503 .tn-elem[data-elem-id="1791906428383"] a.tn-atom {
+    height: 38px !important;
+    padding: 0 16px !important;
+    font-size: 12.5px !important;
+    border-radius: 999px !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* ==========================================================================
+   MOBIL (<= 640px): HERO SEKSIYASI (#rec4760252103)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+  #rec4760252103 .t396__artboard {
+    height: 480px !important;
+    overflow: hidden !important;
+  }
+  #rec4760252103 .t396__carrier,
+  #rec4760252103 .t396__filter {
+    height: 480px !important;
+  }
+
+  /* Badge */
+  #rec4760252103 .tn-elem[data-elem-id="1791960423782"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 25px !important;
+    width: auto !important;
+    text-align: center !important;
+  }
+
+  /* Sarlavha: "LED ekranlarda reklama" */
+  #rec4760252103 .tn-elem[data-elem-id="1791958546954"],
+  #rec4760252103 .tn-elem[data-elem-id="1791958574662000001"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 90vw !important;
+    max-width: 380px !important;
+    text-align: center !important;
+    top: 65px !important;
+  }
+  #rec4760252103 .tn-elem[data-elem-id="1791958546954"] .tn-atom,
+  #rec4760252103 .tn-elem[data-elem-id="1791958574662000001"] .tn-atom {
+    font-size: 27px !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
+  }
+
+  /* Subtitle */
+  #rec4760252103 .tn-elem[data-elem-id="1791959147418"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 88vw !important;
+    max-width: 350px !important;
+    text-align: center !important;
+    top: 175px !important;
+  }
+  #rec4760252103 .tn-elem[data-elem-id="1791959147418"] .tn-atom {
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    color: #94a3b8 !important;
+    text-align: center !important;
+  }
+
+  /* Tugmalar: Centered stack */
+  #rec4760252103 .tn-elem[data-elem-id="1791960041401000003"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 285px !important;
+    width: 240px !important;
+    height: 48px !important;
+  }
+  #rec4760252103 .tn-elem[data-elem-id="1791959351886"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 345px !important;
+    width: 240px !important;
+    height: 48px !important;
+  }
+  #rec4760252103 .tn-elem[data-elem-id="1791960041401000003"] .tn-atom,
+  #rec4760252103 .tn-elem[data-elem-id="1791959351886"] .tn-atom {
+    width: 240px !important;
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 14px !important;
+  }
+}
+
+/* ==========================================================================
+   MOBIL (<= 640px): 4 TA BOSQICH (#rec4795294703) - SIZGA QANDAY YORDAM BERAMIZ
+   (Screenshot 1 va 4 dagi bo'shliq va chetdan chiqib ketishni to'liq tuzatish)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+  #rec4795294703 .t396__artboard {
+    height: 1040px !important;
+    min-height: 1040px !important;
+    overflow: hidden !important;
+  }
+  #rec4795294703 .t396__carrier,
+  #rec4795294703 .t396__filter {
+    height: 1040px !important;
+  }
+
+  /* Pill badge */
+  #rec4795294703 .tn-elem[data-elem-id="1791989273110000001"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 25px !important;
+    width: auto !important;
+    text-align: center !important;
+  }
+
+  /* Subtitle */
+  #rec4795294703 .tn-elem[data-elem-id="1791989202878"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 90vw !important;
+    max-width: 350px !important;
+    text-align: center !important;
+    top: 60px !important;
+  }
+  #rec4795294703 .tn-elem[data-elem-id="1791989202878"] .tn-atom {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+
+  /* Card 01 */
+  #rec4795294703 .tn-elem[data-elem-id="1791989859186000007"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 120px !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 380px !important;
+    height: 205px !important;
+  }
+  #rec4795294703 .tn-elem[data-elem-id="1791989859186000008"] { position: absolute !important; top: 135px !important; left: calc(50% - 150px) !important; font-size: 26px !important; font-weight: 800 !important; color: var(--emerald-light) !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989859186000011"] { position: absolute !important; top: 170px !important; left: calc(50% - 150px) !important; font-size: 17px !important; font-weight: 700 !important; width: 280px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989859186000010"] { position: absolute !important; top: 202px !important; left: calc(50% - 150px) !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989859186000009"] { position: absolute !important; top: 285px !important; left: calc(50% - 125px) !important; font-size: 11.5px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989859186000012"] { position: absolute !important; top: 288px !important; left: calc(50% - 150px) !important; }
+
+  /* Card 02 */
+  #rec4795294703 .tn-elem[data-elem-id="1791989865645000013"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 345px !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 380px !important;
+    height: 205px !important;
+  }
+  #rec4795294703 .tn-elem[data-elem-id="1791989865645000014"] { position: absolute !important; top: 360px !important; left: calc(50% - 150px) !important; font-size: 26px !important; font-weight: 800 !important; color: var(--emerald-light) !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989865645000017"] { position: absolute !important; top: 395px !important; left: calc(50% - 150px) !important; font-size: 17px !important; font-weight: 700 !important; width: 280px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989865645000016"] { position: absolute !important; top: 427px !important; left: calc(50% - 150px) !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989865645000015"] { position: absolute !important; top: 510px !important; left: calc(50% - 125px) !important; font-size: 11.5px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989865645000018"] { position: absolute !important; top: 513px !important; left: calc(50% - 150px) !important; }
+
+  /* Card 03 */
+  #rec4795294703 .tn-elem[data-elem-id="1791989878530000025"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 570px !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 380px !important;
+    height: 205px !important;
+  }
+  #rec4795294703 .tn-elem[data-elem-id="1791989878530000026"] { position: absolute !important; top: 585px !important; left: calc(50% - 150px) !important; font-size: 26px !important; font-weight: 800 !important; color: var(--emerald-light) !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989878530000029"] { position: absolute !important; top: 620px !important; left: calc(50% - 150px) !important; font-size: 17px !important; font-weight: 700 !important; width: 280px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989878530000028"] { position: absolute !important; top: 652px !important; left: calc(50% - 150px) !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989878530000027"] { position: absolute !important; top: 735px !important; left: calc(50% - 125px) !important; font-size: 11.5px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989878530000030"] { position: absolute !important; top: 738px !important; left: calc(50% - 150px) !important; }
+
+  /* Card 04 */
+  #rec4795294703 .tn-elem[data-elem-id="1791989384758000002"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 795px !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 380px !important;
+    height: 205px !important;
+  }
+  #rec4795294703 .tn-elem[data-elem-id="1791989479446000003"] { position: absolute !important; top: 810px !important; left: calc(50% - 150px) !important; font-size: 26px !important; font-weight: 800 !important; color: var(--emerald-light) !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989553238000005"] { position: absolute !important; top: 845px !important; left: calc(50% - 150px) !important; font-size: 17px !important; font-weight: 700 !important; width: 280px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989619600000006"] { position: absolute !important; top: 877px !important; left: calc(50% - 150px) !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989513264000004"] { position: absolute !important; top: 960px !important; left: calc(50% - 125px) !important; font-size: 11.5px !important; }
+  #rec4795294703 .tn-elem[data-elem-id="1791989605470"] { position: absolute !important; top: 963px !important; left: calc(50% - 150px) !important; }
+}
+
+/* ==========================================================================
+   MOBIL (<= 640px): 5 TA QADAM SEKSIYASI (#rec4795873503) - QANDAY ISHLAYDI?
+   (Screenshot 3 va 5 dagi matn kesilishini va keyingi seksiya bilan to'qnashuvni tuzatish)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+  #rec4795873503 .t396__artboard {
+    height: 1040px !important;
+    min-height: 1040px !important;
+    overflow: hidden !important;
+  }
+  #rec4795873503 .t396__carrier,
+  #rec4795873503 .t396__filter {
+    height: 1040px !important;
+  }
+
+  /* Sarlavha: "Qanday ishlaydi?" */
+  #rec4795873503 .tn-elem[data-elem-id="1792026997081000018"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 25px !important;
+    width: 90vw !important;
+    text-align: center !important;
+  }
+  #rec4795873503 .tn-elem[data-elem-id="1792026997081000018"] .tn-atom {
+    font-size: 26px !important;
+    text-align: center !important;
+  }
+
+  /* Kichik matn: "Reklamangizni LED ekranga chiqarish 5 oddiy qadamda." */
+  #rec4795873503 .tn-elem[data-elem-id="1792027096518000019"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 68px !important;
+    width: 92vw !important;
+    max-width: 360px !important;
+    text-align: center !important;
+  }
+  #rec4795873503 .tn-elem[data-elem-id="1792027096518000019"] .tn-atom {
+    font-size: 13.5px !important;
+    white-space: normal !important;
+    line-height: 1.45 !important;
+    text-align: center !important;
+    color: #94a3b8 !important;
+  }
+
+  /* 5 ta qadam (1, 2, 3, 4, 5) */
+  /* Step 1 */
+  #rec4795873503 .tn-elem[data-elem-id="1792026698174000007"] { position: absolute !important; left: calc(50% - 150px) !important; top: 125px !important; width: 44px !important; height: 44px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792026698174000008"] { position: absolute !important; left: calc(50% - 150px + 16px) !important; top: 135px !important; font-size: 18px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027281033000022"] { position: absolute !important; left: calc(50% - 90px) !important; top: 125px !important; font-size: 16.5px !important; width: calc(100vw - 120px) !important; max-width: 240px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027281033000021"] { position: absolute !important; left: calc(50% - 90px) !important; top: 153px !important; font-size: 12.5px !important; line-height: 1.4 !important; width: calc(100vw - 120px) !important; max-width: 240px !important; white-space: normal !important; }
+
+  /* Step 2 */
+  #rec4795873503 .tn-elem[data-elem-id="1792026707580000010"] { position: absolute !important; left: calc(50% - 150px) !important; top: 295px !important; width: 44px !important; height: 44px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792026707580000011"] { position: absolute !important; left: calc(50% - 150px + 16px) !important; top: 305px !important; font-size: 18px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027445159000024"] { position: absolute !important; left: calc(50% - 90px) !important; top: 295px !important; font-size: 16.5px !important; width: calc(100vw - 120px) !important; max-width: 240px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027445159000023"] { position: absolute !important; left: calc(50% - 90px) !important; top: 323px !important; font-size: 12.5px !important; line-height: 1.4 !important; width: calc(100vw - 120px) !important; max-width: 240px !important; white-space: normal !important; }
+
+  /* Step 3 */
+  #rec4795873503 .tn-elem[data-elem-id="1792026722340000013"] { position: absolute !important; left: calc(50% - 150px) !important; top: 465px !important; width: 44px !important; height: 44px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792026722340000014"] { position: absolute !important; left: calc(50% - 150px + 16px) !important; top: 475px !important; font-size: 18px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027575258000026"] { position: absolute !important; left: calc(50% - 90px) !important; top: 465px !important; font-size: 16.5px !important; width: calc(100vw - 120px) !important; max-width: 240px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027575258000025"] { position: absolute !important; left: calc(50% - 90px) !important; top: 493px !important; font-size: 12.5px !important; line-height: 1.4 !important; width: calc(100vw - 120px) !important; max-width: 240px !important; white-space: normal !important; }
+
+  /* Step 4 */
+  #rec4795873503 .tn-elem[data-elem-id="1792026782403000016"] { position: absolute !important; left: calc(50% - 150px) !important; top: 635px !important; width: 44px !important; height: 44px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792026782403000017"] { position: absolute !important; left: calc(50% - 150px + 16px) !important; top: 645px !important; font-size: 18px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027695891000028"] { position: absolute !important; left: calc(50% - 90px) !important; top: 635px !important; font-size: 16.5px !important; width: calc(100vw - 120px) !important; max-width: 240px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027695891000027"] { position: absolute !important; left: calc(50% - 90px) !important; top: 663px !important; font-size: 12.5px !important; line-height: 1.4 !important; width: calc(100vw - 120px) !important; max-width: 240px !important; white-space: normal !important; }
+
+  /* Step 5 */
+  #rec4795873503 .tn-elem[data-elem-id="1792026506786000003"] { position: absolute !important; left: calc(50% - 150px) !important; top: 805px !important; width: 44px !important; height: 44px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792026565079000004"] { position: absolute !important; left: calc(50% - 150px + 16px) !important; top: 815px !important; font-size: 18px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792027272796000020"] { position: absolute !important; left: calc(50% - 90px) !important; top: 805px !important; font-size: 16.5px !important; width: calc(100vw - 120px) !important; max-width: 240px !important; }
+  #rec4795873503 .tn-elem[data-elem-id="1792026234559000001"] { position: absolute !important; left: calc(50% - 90px) !important; top: 833px !important; font-size: 12.5px !important; line-height: 1.4 !important; width: calc(100vw - 120px) !important; max-width: 240px !important; white-space: normal !important; }
+}
+
+/* ==========================================================================
+   MOBIL (<= 640px): KENG AUDITORIYA JALB QILING (#rec4808861303)
+   (Screenshot 2 dagi to'qnashuvni butunlay bartaraf etish)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+  #rec4808861303 {
+    margin-top: 0 !important;
+    padding: 10px 0 !important;
+  }
+  #rec4808861303 .t396__artboard {
+    height: 320px !important;
+    min-height: 320px !important;
+    overflow: hidden !important;
+  }
+  #rec4808861303 .t396__carrier,
+  #rec4808861303 .t396__filter {
+    height: 320px !important;
+  }
+
+  /* Orqa fon kartochkasi */
+  #rec4808861303 .tn-elem[data-elem-id="1792047226750000001"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 10px !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 440px !important;
+    height: 295px !important;
+    border-radius: 20px !important;
+    background: rgba(14, 20, 32, 0.95) !important;
+    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  }
+
+  /* Badge */
+  #rec4808861303 .tn-elem[data-elem-id="1792047488805000002"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 30px !important;
+    width: auto !important;
+    font-size: 10.5px !important;
+  }
+
+  /* Sarlavha */
+  #rec4808861303 .tn-elem[data-elem-id="1792047647858000003"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 72px !important;
+    width: calc(100vw - 60px) !important;
+    max-width: 360px !important;
+    text-align: center !important;
+  }
+  #rec4808861303 .tn-elem[data-elem-id="1792047647858000003"] .tn-atom {
+    font-size: 18.5px !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+  }
+
+  /* Kichik izoh */
+  #rec4808861303 .tn-elem[data-elem-id="1792046194944"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 145px !important;
+    width: calc(100vw - 64px) !important;
+    max-width: 340px !important;
+    text-align: center !important;
+  }
+  #rec4808861303 .tn-elem[data-elem-id="1792046194944"] .tn-atom {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+    color: #94a3b8 !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+
+  /* Tugma */
+  #rec4808861303 .tn-elem[data-elem-id="1792047488805000004"],
+  #rec4808861303 .tn-elem[data-elem-id="1792048087472"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 232px !important;
+    width: 220px !important;
+    height: 44px !important;
+  }
+  #rec4808861303 .tn-elem[data-elem-id="1792047488805000004"] a.tn-atom,
+  #rec4808861303 .tn-elem[data-elem-id="1792047488805000004"] .tn-atom,
+  #rec4808861303 .tn-elem[data-elem-id="1792048087472"] a.tn-atom,
+  #rec4808861303 .tn-elem[data-elem-id="1792048087472"] .tn-atom {
+    width: 220px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13.5px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ==========================================================================
+   MOBIL (<= 640px): BIZ HAQIMIZDA (#rec4809365303)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+  #rec4809365303 .t396__artboard {
+    height: 1240px !important;
+    min-height: 1240px !important;
+    overflow: hidden !important;
+  }
+  #rec4809365303 .t396__carrier,
+  #rec4809365303 .t396__filter {
+    height: 1240px !important;
+  }
+
+  /* Badge */
+  #rec4809365303 .tn-elem[data-elem-id="1792079466956000002"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 20px !important;
+    width: auto !important;
+  }
+
+  /* Sarlavha */
+  #rec4809365303 .tn-elem[data-elem-id="1792080311558000006"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 60px !important;
+    width: 90vw !important;
+    max-width: 380px !important;
+    text-align: center !important;
+  }
+  #rec4809365303 .tn-elem[data-elem-id="1792080311558000006"] .tn-atom {
+    font-size: 20px !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+  }
+
+  /* Subtitle */
+  #rec4809365303 .tn-elem[data-elem-id="1792080333477000008"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 130px !important;
+    width: 88vw !important;
+    max-width: 350px !important;
+    text-align: center !important;
+  }
+  #rec4809365303 .tn-elem[data-elem-id="1792080333477000008"] .tn-atom {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    white-space: normal !important;
+    text-align: center !important;
+    color: #94a3b8 !important;
+  }
+
+  /* Kartochka 1 */
+  #rec4809365303 .tn-elem[data-elem-id="1792080180806000004"] { left: 50% !important; transform: translateX(-50%) !important; top: 245px !important; width: calc(100vw - 32px) !important; max-width: 380px !important; height: 165px !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792080312261000007"] { left: calc(50% - 150px) !important; top: 260px !important; font-size: 17px !important; font-weight: 700 !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792079373327000001"] { left: calc(50% - 150px) !important; top: 290px !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+
+  /* Kartochka 2 */
+  #rec4809365303 .tn-elem[data-elem-id="1792080451873000009"] { left: 50% !important; transform: translateX(-50%) !important; top: 435px !important; width: calc(100vw - 32px) !important; max-width: 380px !important; height: 165px !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792080451873000011"] { left: calc(50% - 150px) !important; top: 450px !important; font-size: 17px !important; font-weight: 700 !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792080451873000010"] { left: calc(50% - 150px) !important; top: 480px !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+
+  /* Kartochka 3 */
+  #rec4809365303 .tn-elem[data-elem-id="1792080563170000013"] { left: 50% !important; transform: translateX(-50%) !important; top: 625px !important; width: calc(100vw - 32px) !important; max-width: 380px !important; height: 165px !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792081956601000026"] { left: calc(50% - 150px) !important; top: 640px !important; font-size: 17px !important; font-weight: 700 !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792080563170000014"] { left: calc(50% - 150px) !important; top: 670px !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+
+  /* Kartochka 4 */
+  #rec4809365303 .tn-elem[data-elem-id="1792082633611000028"] { left: 50% !important; transform: translateX(-50%) !important; top: 815px !important; width: calc(100vw - 32px) !important; max-width: 380px !important; height: 165px !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792082633611000031"] { left: calc(50% - 150px) !important; top: 830px !important; font-size: 17px !important; font-weight: 700 !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792082633611000030"] { left: calc(50% - 150px) !important; top: 860px !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+
+  /* Kartochka 5 */
+  #rec4809365303 .tn-elem[data-elem-id="1792080563170000017"] { left: 50% !important; transform: translateX(-50%) !important; top: 1005px !important; width: calc(100vw - 32px) !important; max-width: 380px !important; height: 165px !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792080563170000019"] { left: calc(50% - 150px) !important; top: 1020px !important; font-size: 17px !important; font-weight: 700 !important; }
+  #rec4809365303 .tn-elem[data-elem-id="1792080563170000018"] { left: calc(50% - 150px) !important; top: 1050px !important; width: calc(100vw - 70px) !important; max-width: 300px !important; font-size: 12.5px !important; line-height: 1.45 !important; white-space: normal !important; color: #94a3b8 !important; }
+}
+
+/* ==========================================================================
+   MOBIL (<= 640px): BOG'LANISH / CTA (#rec4836087003)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+  #rec4836087003 .t396__artboard {
+    height: 350px !important;
+    min-height: 350px !important;
+    overflow: hidden !important;
+  }
+  #rec4836087003 .t396__carrier,
+  #rec4836087003 .t396__filter {
+    height: 350px !important;
+  }
+
+  #rec4836087003 .tn-elem[data-elem-type="shape"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 15px !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 440px !important;
+    height: 320px !important;
+  }
+
+  /* Badge */
+  #rec4836087003 .tn-elem[data-elem-id="1792133873498000002"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 35px !important;
+    width: auto !important;
+  }
+
+  /* Tugmalar: Stack */
+  #rec4836087003 .tn-elem[data-elem-id="1792134138287000004"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 205px !important;
+    width: 230px !important;
+    height: 44px !important;
+  }
+  #rec4836087003 .tn-elem[data-elem-id="1792135072015000005"] {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 260px !important;
+    width: 230px !important;
+    height: 44px !important;
+  }
+  #rec4836087003 .tn-elem[data-elem-id="1792134138287000004"] .tn-atom,
+  #rec4836087003 .tn-elem[data-elem-id="1792135072015000005"] .tn-atom {
+    width: 230px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13.5px !important;
+  }
+}

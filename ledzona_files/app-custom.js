@@ -1233,7 +1233,9 @@
           } else {
             const targetEl = document.querySelector(match.target);
             if (targetEl) {
-              targetEl.scrollIntoView({ behavior: 'smooth' });
+              const headerOffset = window.innerWidth <= 960 ? 64 : 81;
+              const y = targetEl.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+              window.scrollTo({ top: y, behavior: 'smooth' });
             }
           }
         });
@@ -1247,7 +1249,11 @@
         el.addEventListener('click', (e) => {
           e.preventDefault();
           const target = document.getElementById('rec5153177603');
-          if (target) target.scrollIntoView({ behavior: 'smooth' });
+          if (target) {
+            const headerOffset = window.innerWidth <= 960 ? 64 : 81;
+            const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
         });
       }
     });
@@ -1403,6 +1409,36 @@
     artboard.appendChild(accordion);
   }
 
+  // 9. Barcha qurilmalarga (mobil, planshet, kompyuter) moslashuvni mukammallashtirish
+  function setupResponsiveFixes() {
+    function applyFixes() {
+      const isMobile = window.innerWidth <= 768;
+
+      // 1. Zoom xatolarini bartaraf etish (Android Chrome da matn va kartalar kattalashib ketmasligi uchun)
+      if (isMobile) {
+        document.querySelectorAll('.t396__elem').forEach(el => {
+          if (el.style.zoom && parseFloat(el.style.zoom) > 1) {
+            el.style.zoom = '1';
+          }
+        });
+      }
+
+      // 2. Gorizontal skrollni mutlaqo to'xtatish
+      document.documentElement.style.overflowX = 'hidden';
+      document.body.style.overflowX = 'hidden';
+
+      // 3. Barcha bo'limlarni ko'rsatish
+      document.querySelectorAll('.r.t-rec').forEach(r => r.classList.add('lz-revealed'));
+    }
+
+    applyFixes();
+    window.addEventListener('resize', applyFixes);
+    window.addEventListener('orientationchange', applyFixes);
+    setTimeout(applyFixes, 200);
+    setTimeout(applyFixes, 600);
+    setTimeout(applyFixes, 1500);
+  }
+
   // Boshlang'ich initsializatsiya
   function init() {
     injectStyles();
@@ -1413,6 +1449,7 @@
     setupScrollToTop();
     setupFooter();
     setupScrollAnimations();
+    setupResponsiveFixes();
   }
 
   if (document.readyState === 'loading') {
