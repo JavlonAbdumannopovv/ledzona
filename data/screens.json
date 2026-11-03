@@ -1,5 +1,36 @@
 [
   {
+    "id": "screen-1793691237185-2297",
+    "name": "dfasdfsadfsad",
+    "region": "Buxoro viloyati",
+    "address": "asdfasdfasdfasdfa",
+    "description": "sadfasdfasdfasdfa",
+    "imageUrl": "/uploads/1793691237179-439327885.jpg",
+    "images": [
+      "/uploads/1793691237179-439327885.jpg",
+      "/uploads/1793691237182-832163.jpg",
+      "/uploads/1793691237183-261844182.jpg"
+    ],
+    "createdAt": "2026-11-03T07:33:57.185Z",
+    "status": "approved",
+    "updatedAt": "2026-11-03T07:34:14.465Z"
+  },
+  {
+    "id": "screen-1793690537371-6903",
+    "name": "sdfasdfasdf",
+    "region": "Farg'ona viloyati",
+    "address": "asdfasdfasdfasdfa",
+    "description": "asdfasdfasdfasfasdfasdfasdfa",
+    "imageUrl": "/uploads/1793690537368-375667658.jpg",
+    "images": [
+      "/uploads/1793690537368-375667658.jpg",
+      "/uploads/1793690537370-588905950.jpg"
+    ],
+    "createdAt": "2026-11-03T07:22:17.371Z",
+    "status": "approved",
+    "updatedAt": "2026-11-03T07:23:21.645Z"
+  },
+  {
     "id": "screen-1793539817918-4567",
     "name": "fadsfsadfadsf",
     "region": "Andijon viloyati",
@@ -27,7 +58,8 @@
       "/ledzona_files/AB6AXuAbjtKRAKhnDSuw.png.webp"
     ],
     "createdAt": "2026-10-31T07:44:24.696Z",
-    "status": "approved"
+    "status": "approved",
+    "updatedAt": "2026-11-03T07:21:19.347Z"
   },
   {
     "id": "screen-1793432674630",

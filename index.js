@@ -12,6 +12,64 @@ const PORT = process.env.PORT || 3000;
 // ============================================================================
 const JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'ledzona-jwt-secret-token-key-2026';
 
+// ============================================================================
+// 1.1 Kontakt Sozlamalari (settings.json — doimiy omborda)
+// ============================================================================
+const DEFAULT_SETTINGS = {
+  phone: '+998 91 801 24 00',
+  telegram: 'Ulug_2400'
+};
+
+function cleanPhoneForLink(phone) {
+  if (!phone) return '+998918012400';
+  const digits = String(phone).replace(/[^\d+]/g, '');
+  if (!digits.startsWith('+') && digits.length >= 9) {
+    return '+' + digits;
+  }
+  return digits;
+}
+
+function cleanTelegramUsername(username) {
+  if (!username) return 'Ulug_2400';
+  let clean = String(username).trim();
+  clean = clean.replace(/^https?:\/\/t\.me\//i, '').replace(/^@/, '').replace(/\/.*$/, '');
+  return clean || 'Ulug_2400';
+}
+
+async function readSettings() {
+  try {
+    const data = await storage.readJSON('settings', DEFAULT_SETTINGS);
+    const phone = (data && data.phone) ? String(data.phone).trim() : DEFAULT_SETTINGS.phone;
+    const telegram = cleanTelegramUsername(data && data.telegram ? data.telegram : DEFAULT_SETTINGS.telegram);
+    return {
+      phone,
+      rawPhone: cleanPhoneForLink(phone),
+      telegram
+    };
+  } catch (err) {
+    console.error('Sozlamalarni o\'qishda xatolik:', err);
+    return {
+      ...DEFAULT_SETTINGS,
+      rawPhone: cleanPhoneForLink(DEFAULT_SETTINGS.phone)
+    };
+  }
+}
+
+async function writeSettings(newSettings) {
+  const phone = (newSettings.phone && String(newSettings.phone).trim()) || DEFAULT_SETTINGS.phone;
+  const telegram = cleanTelegramUsername(newSettings.telegram);
+  const data = {
+    phone,
+    telegram,
+    updatedAt: new Date().toISOString()
+  };
+  await storage.writeJSON('settings', data);
+  return {
+    ...data,
+    rawPhone: cleanPhoneForLink(phone)
+  };
+}
+
 function hashPassword(pwd) {
   return crypto.createHash('sha256').update(pwd).digest('hex');
 }
@@ -201,6 +259,20 @@ app.get('/api/blob-proxy', async (req, res) => {
   }
 });
 
+// ============================================================================
+// 5. OMMALASHGAN KONTAKT SOZLAMALARI API
+// ============================================================================
+app.get('/api/settings', async (req, res) => {
+  noCache(res);
+  try {
+    const settings = await readSettings();
+    res.json({ success: true, ...settings });
+  } catch (err) {
+    console.error('Settings olishda xatolik:', err);
+    res.json({ success: true, ...DEFAULT_SETTINGS, rawPhone: cleanPhoneForLink(DEFAULT_SETTINGS.phone) });
+  }
+});
+
 // Faqat tasdiqlangan (approved) ekranlarni saytga chiqarish
 app.get('/api/screens', async (req, res) => {
   noCache(res);
@@ -232,9 +304,18 @@ app.post('/api/screens', (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Ekran nomi kiritilishi shart!' });
     }
 
-    const files = (req.files && Array.isArray(req.files))
-      ? req.files.filter(f => f.mimetype && f.mimetype.startsWith('image/')).slice(0, 3)
-      : (req.file ? [req.file] : []);
+    let files = [];
+    if (req.files && Array.isArray(req.files)) {
+      // Agar 'images' maydoni bo'lsa, ularni ustuvor olamiz (takrorlanmasligi uchun)
+      const imagesField = req.files.filter(f => f.fieldname === 'images');
+      if (imagesField.length > 0) {
+        files = imagesField.slice(0, 3);
+      } else {
+        files = req.files.filter(f => f.mimetype && f.mimetype.startsWith('image/')).slice(0, 3);
+      }
+    } else if (req.file) {
+      files = [req.file];
+    }
 
     const savedImages = [];
     for (const f of files) {
@@ -343,6 +424,43 @@ app.post('/api/admin/change-password', requireAdminAuth, async (req, res) => {
     });
   } catch (err) {
     console.error('Parol o\'zgartirishda xatolik:', err);
+    return res.status(500).json({ success: false, message: 'Server xatoligi yuz berdi' });
+  }
+});
+
+// Kontakt sozlamalarini olish (Admin uchun)
+app.get('/api/admin/settings', requireAdminAuth, async (req, res) => {
+  noCache(res);
+  try {
+    const settings = await readSettings();
+    res.json({ success: true, settings });
+  } catch (err) {
+    console.error('Admin settings olishda xatolik:', err);
+    res.status(500).json({ success: false, message: 'Server xatoligi yuz berdi' });
+  }
+});
+
+// Kontakt sozlamalarini yangilash (Admin uchun)
+app.post('/api/admin/settings', requireAdminAuth, async (req, res) => {
+  try {
+    const { phone, telegram } = req.body;
+    if (!phone || !String(phone).trim()) {
+      return res.status(400).json({ success: false, message: 'Telefon raqamini kiriting!' });
+    }
+    if (!telegram || !String(telegram).trim()) {
+      return res.status(400).json({ success: false, message: 'Telegram username yoki manzilini kiriting!' });
+    }
+
+    const updated = await writeSettings({ phone, telegram });
+    console.log('Kontakt sozlamalari yangilandi:', updated);
+
+    return res.json({
+      success: true,
+      message: 'Kontakt sozlamalari muvaffaqiyatli saqlandi! Butun saytda yangi ma\'lumotlar aks etadi.',
+      settings: updated
+    });
+  } catch (err) {
+    console.error('Settings saqlashda xatolik:', err);
     return res.status(500).json({ success: false, message: 'Server xatoligi yuz berdi' });
   }
 });

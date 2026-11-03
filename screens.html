@@ -1024,7 +1024,7 @@
   <div class="screens-drawer-backdrop" id="screens-drawer-backdrop"></div>
   <aside class="screens-drawer" id="screens-drawer">
     <div class="screens-drawer-header">
-      <div class="screens-logo">LEDZONE<span>.UZ</span></div>
+      <a href="/" class="screens-logo" style="text-decoration:none; cursor:pointer;" title="Bosh sahifa">LEDZONE<span>.UZ</span></a>
       <button type="button" class="screens-drawer-close" id="screens-drawer-close">✕</button>
     </div>
     <nav class="screens-drawer-nav">
@@ -1053,7 +1053,7 @@
         <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
         +998 91 801 24 00
       </a>
-      <a href="https://t.me/Ulug_2400" target="_blank" class="drawer-tg">
+      <a href="https://t.me/Ulug_2400" target="_blank" rel="noopener noreferrer" class="drawer-tg">
         Telegram orqali bog‘lanish ↗
       </a>
     </div>
@@ -1107,7 +1107,7 @@
 
   <!-- 3. Footer -->
   <footer class="screens-footer">
-    <p>© 2026 <strong>LEDZONE.UZ</strong> — Barcha huquqlar himoyalangan. Savollar bo‘yicha: <a href="https://t.me/Ulug_2400" target="_blank">@Ulug_2400</a></p>
+    <p>© 2026 <strong>LEDZONE.UZ</strong> — Barcha huquqlar himoyalangan. Savollar bo‘yicha: <a href="https://t.me/Ulug_2400" target="_blank" rel="noopener noreferrer">@Ulug_2400</a></p>
   </footer>
 
   <script>
@@ -1293,7 +1293,7 @@
                 ${screen.description ? `
                   <div class="screen-card-desc">${escapeHtml(screen.description)}</div>
                 ` : ''}
-                <a href="https://t.me/Ulug_2400?text=${telegramMessage}" target="_blank" class="screen-card-cta">
+                <a href="https://t.me/${(window.LEDZONA_SETTINGS && window.LEDZONA_SETTINGS.telegram) ? window.LEDZONA_SETTINGS.telegram : 'Ulug_2400'}?text=${telegramMessage}" target="_blank" rel="noopener noreferrer" class="screen-card-cta">
                   <span>Reklama joylashtirish</span>
                   <span>↗</span>
                 </a>
@@ -1365,6 +1365,90 @@
       if (lbPrev) lbPrev.addEventListener('click', (e) => { e.stopPropagation(); window.shiftLightbox(-1); });
       if (lbNext) lbNext.addEventListener('click', (e) => { e.stopPropagation(); window.shiftLightbox(1); });
 
+      // Dinamik kontaktlar
+      window.LEDZONA_SETTINGS = {
+        phone: '+998 91 801 24 00',
+        rawPhone: '+998918012400',
+        telegram: 'Ulug_2400'
+      };
+
+      function applyContactSettings(settings) {
+        if (!settings || !settings.phone || !settings.telegram) return;
+        window.LEDZONA_SETTINGS = {
+          phone: settings.phone,
+          rawPhone: settings.rawPhone || ('+' + settings.phone.replace(/[^\d]/g, '')),
+          telegram: settings.telegram.replace(/^@/, '')
+        };
+
+        const s = window.LEDZONA_SETTINGS;
+
+        // Drawer phone
+        const drawerPhone = document.querySelector('.drawer-phone');
+        if (drawerPhone) {
+          drawerPhone.setAttribute('href', 'tel:' + s.rawPhone);
+          const svg = drawerPhone.querySelector('svg');
+          drawerPhone.innerHTML = '';
+          if (svg) drawerPhone.appendChild(svg);
+          drawerPhone.appendChild(document.createTextNode(' ' + s.phone));
+        }
+
+        // Drawer Telegram
+        const drawerTg = document.querySelector('.drawer-tg');
+        if (drawerTg) {
+          drawerTg.setAttribute('href', 'https://t.me/' + s.telegram);
+        }
+
+        // Footer Telegram
+        document.querySelectorAll('.screens-footer a[href*="t.me/"]').forEach(a => {
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+          a.setAttribute('href', 'https://t.me/' + s.telegram);
+          a.textContent = '@' + s.telegram;
+        });
+
+        // Barcha mavjud kartochkalar ichidagi t.me tugmalari
+        document.querySelectorAll('a.screen-card-cta, a[href*="t.me/"]').forEach(a => {
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+          const oldHref = a.getAttribute('href');
+          if (oldHref) {
+            a.setAttribute('href', oldHref.replace(/t\.me\/([a-zA-Z0-9_]+)/i, 't.me/' + s.telegram));
+          }
+        });
+      }
+
+      async function fetchContactSettings() {
+        try {
+          const res = await fetch('/api/settings');
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.success) {
+              applyContactSettings(data);
+              setTimeout(() => applyContactSettings(data), 600);
+              setTimeout(() => applyContactSettings(data), 1800);
+            }
+          }
+        } catch (e) {}
+      }
+
+      try {
+        if (window.BroadcastChannel) {
+          const bc = new BroadcastChannel('ledzona_sync_channel');
+          bc.addEventListener('message', (ev) => {
+            if (ev.data && ev.data.type === 'SETTINGS_CHANGED' && ev.data.settings) {
+              applyContactSettings(ev.data.settings);
+            }
+          });
+        }
+      } catch (e) {}
+
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'ledzona_settings_last_sync') {
+          fetchContactSettings();
+        }
+      });
+
+      fetchContactSettings();
       loadScreens();
     })();
   </script>

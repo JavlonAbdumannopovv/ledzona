@@ -1458,7 +1458,7 @@
                     <p class="led-screen-card__desc-text">${escapeHtml(screen.description)}</p>
                   </div>
                 ` : ''}
-                <a href="https://t.me/Ulug_2400?text=${telegramMessage}" target="_blank" class="led-screen-card__action-btn">
+                <a href="https://t.me/${(window.LEDZONA_SETTINGS && window.LEDZONA_SETTINGS.telegram) ? window.LEDZONA_SETTINGS.telegram : 'Ulug_2400'}?text=${telegramMessage}" target="_blank" class="led-screen-card__action-btn">
                   <span>Reklama joylashtirish</span>
                   <span>↗</span>
                 </a>
@@ -1786,9 +1786,6 @@
         for (let i = 0; i < filesToUpload.length; i++) {
           const prepared = await compressImage(filesToUpload[i]);
           formData.append('images', prepared, prepared.name || `image_${i + 1}.jpg`);
-          if (i === 0) {
-            formData.append('image', prepared, prepared.name || 'image.jpg');
-          }
         }
 
         const originalText = submitBtnSpan.textContent;
@@ -1850,7 +1847,7 @@
     drawer.className = 'ledzona-mobile-nav-drawer';
     drawer.innerHTML = `
       <div class="ledzona-mobile-nav-header">
-        <div class="ledzona-mobile-nav-logo">LEDZONE<span>.UZ</span></div>
+        <a href="/" class="ledzona-mobile-nav-logo" style="text-decoration:none; cursor:pointer;">LEDZONE<span>.UZ</span></a>
       </div>
 
       <nav class="ledzona-mobile-nav-links">
@@ -1881,9 +1878,9 @@
       </nav>
 
       <div class="ledzona-mobile-nav-footer">
-        <a href="tel:+998918012400" class="ledzona-mobile-nav-phone">
+        <a href="tel:${(window.LEDZONA_SETTINGS && window.LEDZONA_SETTINGS.rawPhone) ? window.LEDZONA_SETTINGS.rawPhone : '+998918012400'}" class="ledzona-mobile-nav-phone">
           <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-          +998 91 801 24 00
+          ${(window.LEDZONA_SETTINGS && window.LEDZONA_SETTINGS.phone) ? window.LEDZONA_SETTINGS.phone : '+998 91 801 24 00'}
         </a>
         <a class="ledzona-mobile-nav-cta" data-target="#rec5136870403">
           Reklama joylashtirish
@@ -1961,19 +1958,23 @@
 
     // Qahramon banneridagi barcha tugmalar
     document.querySelectorAll('.tn-atom, a').forEach(el => {
-      if (el.textContent.includes('LED ekranlarni ko‘rish')) {
+      if (el.textContent.includes('LED ekranlarni ko‘rish') || el.textContent.includes('LED ekranlarni ko\'rish')) {
         el.style.cursor = 'pointer';
         el.addEventListener('click', (e) => {
           e.preventDefault();
-          const target = document.getElementById('rec5153177603');
-          if (target) {
-            const headerOffset = window.innerWidth <= 960 ? 64 : 81;
-            const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
+          window.location.href = '/screens.html';
         });
       }
     });
+
+    // Headerdagi asosiy logo bosilganda bosh sahifaga o'tish
+    const headerLogo = document.querySelector('#rec4758242503 [data-elem-id="1791905583429"]');
+    if (headerLogo) {
+      headerLogo.style.cursor = 'pointer';
+      headerLogo.addEventListener('click', () => {
+        window.location.href = '/';
+      });
+    }
   }
 
   // 6. Floating "Yuqoriga qaytish" tugmasi
@@ -2011,7 +2012,7 @@
       footer.innerHTML = `
         <div class="footer-brand">LED<span>ZONE</span></div>
         <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 14px;">O‘zbekiston bo‘ylab eng yirik tashqi LED ekranlar tarmog‘i va reklama platformasi.</p>
-        <p style="margin: 0 0 12px 0; font-size: 14px;">Bog‘lanish: <a href="https://t.me/Ulug_2400" target="_blank">Biz bilan bog‘lanish (Telegram)</a> &bull; <a href="tel:+998918012400">+998 91 801 24 00</a></p>
+        <p style="margin: 0 0 12px 0; font-size: 14px;">Bog‘lanish: <a href="https://t.me/${(window.LEDZONA_SETTINGS && window.LEDZONA_SETTINGS.telegram) ? window.LEDZONA_SETTINGS.telegram : 'Ulug_2400'}" target="_blank">Biz bilan bog‘lanish (Telegram)</a> &bull; <a href="tel:${(window.LEDZONA_SETTINGS && window.LEDZONA_SETTINGS.rawPhone) ? window.LEDZONA_SETTINGS.rawPhone : '+998918012400'}">${(window.LEDZONA_SETTINGS && window.LEDZONA_SETTINGS.phone) ? window.LEDZONA_SETTINGS.phone : '+998 91 801 24 00'}</a></p>
         <p style="margin: 0; font-size: 13px; color: #475569;">&copy; ${new Date().getFullYear()} LEDZONE. Barcha huquqlar himoyalangan.</p>
       `;
       document.body.appendChild(footer);
@@ -2186,7 +2187,120 @@
     }, 500);
   });
 
+  // ==========================================================================
+  // 10. ZAMONAVIY DINAMIK KONTAKTLAR (Telefon va Telegram)
+  // ==========================================================================
+  window.LEDZONA_SETTINGS = {
+    phone: '+998 91 801 24 00',
+    rawPhone: '+998918012400',
+    telegram: 'Ulug_2400'
+  };
+
+  function applyContactSettings(settings) {
+    if (!settings || !settings.phone || !settings.telegram) return;
+    window.LEDZONA_SETTINGS = {
+      phone: settings.phone,
+      rawPhone: settings.rawPhone || ('+' + settings.phone.replace(/[^\d]/g, '')),
+      telegram: settings.telegram.replace(/^@/, '')
+    };
+
+    const s = window.LEDZONA_SETTINGS;
+
+    // 1. Barcha tel: havolalari
+    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+      link.setAttribute('href', 'tel:' + s.rawPhone);
+      const textSpan = link.querySelector('.tn-atom__button-text');
+      if (textSpan) {
+        textSpan.textContent = s.phone;
+      } else {
+        const svg = link.querySelector('svg');
+        if (svg) {
+          link.innerHTML = '';
+          link.appendChild(svg);
+          link.appendChild(document.createTextNode(' ' + s.phone));
+        } else if (/(\+?998|\d{2,3}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2})/.test(link.textContent)) {
+          link.textContent = s.phone;
+        }
+      }
+    });
+
+    // 2. Barcha t.me havolalari (yangi brauzer oynasida ochiladi)
+    document.querySelectorAll('a[href*="t.me/"]').forEach(link => {
+      if (link.textContent.includes('LED ekranlarni ko')) return;
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+      const oldHref = link.getAttribute('href');
+      if (oldHref) {
+        const newHref = oldHref.replace(/t\.me\/([a-zA-Z0-9_]+)/i, 't.me/' + s.telegram);
+        link.setAttribute('href', newHref);
+      }
+      const txt = link.textContent.trim();
+      if (txt.startsWith('@')) {
+        link.textContent = '@' + s.telegram;
+      }
+    });
+
+    // 3. Tilda Zero-Block statik telefon matnlari
+    document.querySelectorAll('.tn-atom').forEach(el => {
+      if (el.children.length === 0) {
+        const txt = el.textContent.trim();
+        if (/^\+?998[\s-]?\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(txt) || txt.includes('801 24 00')) {
+          el.textContent = s.phone;
+        }
+      }
+    });
+
+    // 4. Mobil menyu va maxsus elementlar
+    document.querySelectorAll('.ledzona-mobile-nav-phone').forEach(link => {
+      link.setAttribute('href', 'tel:' + s.rawPhone);
+      const svg = link.querySelector('svg');
+      if (svg) {
+        link.innerHTML = '';
+        link.appendChild(svg);
+        link.appendChild(document.createTextNode(' ' + s.phone));
+      }
+    });
+  }
+
+  async function fetchContactSettings() {
+    try {
+      const res = await fetch('/api/settings');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.success) {
+          applyContactSettings(data);
+          setTimeout(() => applyContactSettings(data), 600);
+          setTimeout(() => applyContactSettings(data), 1800);
+        }
+      }
+    } catch (e) {
+      console.warn('[settings] Sozlamalarni olishda xatolik:', e);
+    }
+  }
+
+  function setupDynamicContacts() {
+    fetchContactSettings();
+
+    try {
+      if (window.BroadcastChannel) {
+        const bc = new BroadcastChannel('ledzona_sync_channel');
+        bc.addEventListener('message', (ev) => {
+          if (ev.data && ev.data.type === 'SETTINGS_CHANGED' && ev.data.settings) {
+            applyContactSettings(ev.data.settings);
+          }
+        });
+      }
+    } catch (e) {}
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'ledzona_settings_last_sync') {
+        fetchContactSettings();
+      }
+    });
+  }
+
   function init() {
+    setupDynamicContacts();
     injectStyles();
     fetchScreensData();
     setupForm();
